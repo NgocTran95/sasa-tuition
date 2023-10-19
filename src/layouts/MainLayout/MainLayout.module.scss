@@ -1,0 +1,32 @@
+.main-layout {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: var(--primary-color);
+    padding: 12px;
+}
+
+.content {
+    flex: 1;
+    border-radius: 3rem;
+    padding: 0 16px 40px;
+    background-color: var(--background-color);
+}
+
+.top-bar {
+    height: 67px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border-bottom: 1px solid rgb(226, 232,240);
+}
+
+@media (min-width: 768px) {
+    .main-layout {
+        flex-direction: row;
+    }
+    .content {
+        padding: 0 22px;
+    }
+}

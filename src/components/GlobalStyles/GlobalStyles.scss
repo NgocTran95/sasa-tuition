@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700&family=Great+Vibes&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --text-color: #212529;
+    --primary-color: #1e40af;
+    --background-color: #f1f5f8;
+    --primary-font-family: 'Roboto', sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+    width: 100%;
+}
+
+body {
+    font-family: var(--primary-font-family);
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text-color);
+    text-rendering: optimizeSpeed;
+}
+
+.css-1kkal6p-MuiAutocomplete-root .MuiOutlinedInput-root .MuiAutocomplete-input {
+    font-size: 1.5rem;
+}

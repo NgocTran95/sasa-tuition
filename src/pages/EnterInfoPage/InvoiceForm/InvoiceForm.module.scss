@@ -1,0 +1,21 @@
+.form {
+    font-size: 1rem;
+}
+.title {
+    font-size: 1.8rem;
+}
+
+.input-label {
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+.tuition-time-part {
+    width: 48%;
+}
+
+@media (min-width: 1023px) {
+    .form {
+        width: 50%;
+    }
+}

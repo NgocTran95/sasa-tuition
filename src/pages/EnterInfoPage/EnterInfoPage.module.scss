@@ -1,0 +1,93 @@
+.container {
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.invoice {
+    width: 100%;
+    background: url(../../assets/images/tuition-invoice.png) no-repeat center;
+    background-size: contain;
+    margin-top: 20px;
+    aspect-ratio: 1 / 1.41;
+    position: relative;
+    .content {
+        position: absolute;
+        top: 35.5%;
+        left: 5%;
+        right: 5%;
+        width: 90%;
+        height: 63%;
+        margin: auto;
+        font-size: 0.7rem;
+        .row {
+            display: flex;
+            align-items: center;
+            height: 8.33333%;
+        }
+        .item {
+            text-align: center;
+        }
+        .payment-time {
+            width: 19%;
+        }
+        .learn-time {
+            width: 22%;
+        }
+        .tuition-fee {
+            width: 24%;
+        }
+        .confirm {
+            width: 20%;
+        }
+        .note {
+            width: 15%;
+        }
+    }
+}
+
+@media (min-width: 300px) {
+    .invoice {
+        .content {
+            font-size: 0.9rem;
+        }
+    }
+} 
+
+@media (min-width: 361px) {
+    .invoice {
+        .content {
+            font-size: 1rem;
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    .invoice {
+        .content {
+            font-size: 1.5rem;
+        }
+    }
+} 
+
+@media (min-width: 1023px) {
+    .container {
+        flex-direction: row;
+        gap: 30px;
+    }
+    .invoice {
+        width: 50%;
+        margin-top: unset;
+        .content {
+            font-size: 1.3rem;
+        }
+    }
+}
+
+@media (min-width: 1200px) {
+    .invoice {
+        .content {
+            font-size: 1.5rem;
+        }
+    }
+}
