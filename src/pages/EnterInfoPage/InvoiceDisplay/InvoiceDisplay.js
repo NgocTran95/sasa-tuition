@@ -1,25 +1,20 @@
 import classNames from "classnames/bind";
+import { useRef } from "react";
 
+import DownloadButton from '../../../components/DownloadButton';
 import styles from "./InvoiceDisplay.module.scss";
-import { Button } from "@mui/material";
 
 const cx = classNames.bind(styles);
 function InvoiceDisplay() {
+  const invoiceUpdate = useRef(null);
   return (
-    <div className={cx("invoice")}>
+    <div className={cx("invoice")} id='invoice-update' ref={invoiceUpdate}>
       <div className={cx("information")}>
         <div className={cx("year")}>2023</div>
         <div className={cx("name")}>Trần Minh Ngọc</div>
         <div className={cx("subject")}>Toán</div>
         <div className={cx("class")}>8</div>
       </div>
-      <Button
-        variant="contained"
-        color="warning"
-        className={cx("download-btn")}
-      >
-        Tải về
-      </Button>
       <div className={cx("content")}>
         <div className={cx("row")}>
           <div className={cx("item", "payment-time")}>10/10/2023</div>
@@ -106,6 +101,7 @@ function InvoiceDisplay() {
           <div className={cx("item", "note")}>CK</div>
         </div>
       </div>
+      <DownloadButton domEl={invoiceUpdate}/>
     </div>
   );
 }

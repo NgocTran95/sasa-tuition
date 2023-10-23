@@ -1,13 +1,31 @@
 import classNames from "classnames/bind";
+import { useState } from "react";
 import { TextField, Autocomplete, FormControl, Button } from "@mui/material";
 
 import styles from "./InvoiceForm.module.scss";
 
-const classOptions = [{ label: 6 }, { label: 7 }, { label: 8 }, { label: 9 }];
+const classOptions = [
+  { label: "Lớp 6", value: 6 },
+  { label: "Lớp 7", value: 7 },
+  { label: "Lớp 8", value: 8 },
+  { label: "Lớp 9", value: 9 },
+];
 const paymentOptions = [{ label: "Chuyển khoản" }, { label: "Tiền mặt" }];
 
 const cx = classNames.bind(styles);
 function InvoiceForm() {
+  const [info, setInfo] = useState({
+    name: "",
+    class: 0,
+    paymentDate: "",
+    startTime: "",
+    endTime: "",
+    amount: 0,
+    paymentMethod: "",
+  });
+  const updateInvoice = () => {
+    console.log(info);
+  };
   return (
     <form className={cx("form")}>
       <h2 className={cx("title")}>Điền thông tin học phí</h2>
@@ -18,6 +36,9 @@ function InvoiceForm() {
           type="text"
           fullWidth
           inputProps={{ style: { fontSize: "1.5rem" } }}
+          onChange={(e) =>
+            setInfo((prev) => ({ ...prev, name: e.target.value }))
+          }
         />
       </FormControl>
       <h3 className={cx("input-label")}>Lớp: </h3>
@@ -28,6 +49,10 @@ function InvoiceForm() {
           options={classOptions}
           renderInput={(params) => <TextField {...params} />}
           fullWidth
+          isOptionEqualToValue={(option, value) => option.value === value.value}
+          onChange={(e, value) =>
+            setInfo((prev) => ({ ...prev, class: value.value }))
+          }
         />
       </FormControl>
       <h3 className={cx("input-label")}>Ngày nộp: </h3>
@@ -37,6 +62,9 @@ function InvoiceForm() {
           type="date"
           fullWidth
           inputProps={{ style: { fontSize: "1.5rem" } }}
+          onChange={(e) =>
+            setInfo((prev) => ({ ...prev, paymentDate: e.target.value }))
+          }
         />
       </FormControl>
       <h3 className={cx("input-label")}>Thời gian: </h3>
@@ -56,6 +84,9 @@ function InvoiceForm() {
             type="date"
             fullWidth
             inputProps={{ style: { fontSize: "1.5rem" } }}
+            onChange={(e) =>
+              setInfo((prev) => ({ ...prev, startTime: e.target.value }))
+            }
           />
         </div>
         <div className={cx("tuition-time-part")}>
@@ -65,6 +96,9 @@ function InvoiceForm() {
             type="date"
             fullWidth
             inputProps={{ style: { fontSize: "1.5rem" } }}
+            onChange={(e) =>
+              setInfo((prev) => ({ ...prev, endTime: e.target.value }))
+            }
           />
         </div>
       </FormControl>
@@ -97,6 +131,7 @@ function InvoiceForm() {
           marginTop: "10px",
           fontSize: "1.5rem",
         }}
+        onClick={updateInvoice}
       >
         Cập nhật
       </Button>
