@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFileCirclePlus,
   faFileCircleQuestion,
+  faUserPlus,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,6 +13,26 @@ import { NavLink, useLocation } from "react-router-dom";
 import { Button, Drawer } from "@mui/material";
 import { useState } from "react";
 
+const navOptions = [
+  {
+    id: 1,
+    path: "/",
+    icon: faFileCirclePlus,
+    content: "Cập nhật học phí",
+  },
+  {
+    id: 2,
+    path: "/add-student",
+    icon: faUserPlus,
+    content: "Thêm thông tin học sinh",
+  },
+  {
+    id: 3,
+    path: "/query",
+    icon: faFileCircleQuestion,
+    content: "Truy vấn học phí",
+  },
+];
 const cx = classNames.bind(styles);
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
@@ -34,55 +55,36 @@ function Header() {
       </div>
       <div className={cx("devider")}></div>
       <ul className={cx("navigation")}>
-        <li>
-          <NavLink
-            to={"/"}
-            className={cx("nav-btn", pathname === "/" && "active")}
-            style={({ isActive }) => {
-              return {
-                color: isActive
-                  ? "var(--primary-color)"
-                  : "var(--background-color)",
-                backgroundColor: isActive
-                  ? "var(--background-color)"
-                  : "var(--primary-color)",
-              };
-            }}
-          >
-            <FontAwesomeIcon icon={faFileCirclePlus} />
-          </NavLink>
-          {pathname === "/" && <div className={cx("filler")}></div>}
-        </li>
-        <li>
-          <NavLink
-            to={"/export"}
-            className={cx("nav-btn", pathname === "/export" && "active")}
-            style={({ isActive }) => {
-              return {
-                color: isActive
-                  ? "var(--primary-color)"
-                  : "var(--background-color)",
-                backgroundColor: isActive
-                  ? "var(--background-color)"
-                  : "var(--primary-color)",
-              };
-            }}
-          >
-            <FontAwesomeIcon icon={faFileCircleQuestion} />
-          </NavLink>
-          {pathname === "/export" && <div className={cx("filler")}></div>}
-        </li>
+        {navOptions.map((option) => (
+          <li key={option.id}>
+            <NavLink
+              to={option.path}
+              className={cx("nav-btn", pathname === option.path && "active")}
+              style={({ isActive }) => {
+                return {
+                  color: isActive
+                    ? "var(--primary-color)"
+                    : "var(--background-color)",
+                  backgroundColor: isActive
+                    ? "var(--background-color)"
+                    : "var(--primary-color)",
+                };
+              }}
+            >
+              <FontAwesomeIcon icon={option.icon} />
+            </NavLink>
+            {pathname === option.path && <div className={cx("filler")}></div>}
+          </li>
+        ))}
       </ul>
       <Drawer anchor={"left"} open={showMenu} onClose={closeMenu}>
         <div className={cx("side-menu")}>
-          <NavLink to={"/"} className={cx("link")} onClick={closeMenu}>
-            <FontAwesomeIcon icon={faFileCirclePlus} />
-            <span className={cx("link-name")}>Cập nhật học phí</span>
-          </NavLink>
-          <NavLink to={"/export"} className={cx("link")} onClick={closeMenu}>
-            <FontAwesomeIcon icon={faFileCircleQuestion} />
-            <span className={cx("link-name")}>Tra cứu học phí</span>
-          </NavLink>
+          {navOptions.map((option) => (
+            <NavLink to={option.path} key={option.id} className={cx("link")} onClick={closeMenu}>
+              <FontAwesomeIcon icon={option.icon} />
+              <span className={cx("link-name")}>{option.content}</span>
+            </NavLink>
+          ))}
         </div>
       </Drawer>
     </header>

@@ -109,6 +109,9 @@ function InvoiceForm() {
           type="number"
           fullWidth
           inputProps={{ style: { fontSize: "1.5rem" } }}
+          onChange={(e) =>
+            setInfo((prev) => ({ ...prev, amount: +e.target.value }))
+          }
         />
         <span>{"(VNĐ)"}</span>
       </FormControl>
@@ -120,6 +123,9 @@ function InvoiceForm() {
           options={paymentOptions}
           renderInput={(params) => <TextField {...params} />}
           fullWidth
+          onChange={(e, value) =>
+            setInfo((prev) => ({ ...prev, paymentMethod: value.label }))
+          }
         />
       </FormControl>
       <Button
