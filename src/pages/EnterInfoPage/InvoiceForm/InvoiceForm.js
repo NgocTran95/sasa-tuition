@@ -1,7 +1,15 @@
 import classNames from "classnames/bind";
-import { useState } from "react";
-import { TextField, Autocomplete, FormControl, Button } from "@mui/material";
+import {
+  TextField,
+  Autocomplete,
+  FormControl,
+  Button,
+  Container,
+} from "@mui/material";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
+import { validateEnterInfoSchema } from "../../../validateForm/validateSchema";
 import styles from "./InvoiceForm.module.scss";
 
 const classOptions = [
@@ -14,121 +22,85 @@ const paymentOptions = [{ label: "Chuyển khoản" }, { label: "Tiền mặt" }
 
 const cx = classNames.bind(styles);
 function InvoiceForm() {
-  const [info, setInfo] = useState({
-    name: "",
-    class: 0,
-    paymentDate: "",
-    startTime: "",
-    endTime: "",
-    amount: 0,
-    paymentMethod: "",
-  });
-  const updateInvoice = () => {
-    console.log(info);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(validateEnterInfoSchema) });
+
+  const updateInvoice = (data) => {
+    console.log(data);
   };
   return (
-    <form className={cx("form")}>
+    <form className={cx("form")} onSubmit={handleSubmit(updateInvoice)}>
       <h2 className={cx("title")}>Điền thông tin học phí</h2>
-      <h3 className={cx("input-label")}>Họ và tên: </h3>
-      <FormControl margin="dense" fullWidth>
-        <TextField
-          id="name"
+      <div className={cx("form-control")}>
+        <label className={cx("input-label")} htmlFor="student-name">
+          Họ và tên:{" "}
+        </label>
+        <input
           type="text"
-          fullWidth
-          inputProps={{ style: { fontSize: "1.5rem" } }}
-          onChange={(e) =>
-            setInfo((prev) => ({ ...prev, name: e.target.value }))
-          }
+          id="student-name"
+          autoComplete="student-name"
+          placeholder="Enter student name..."
         />
-      </FormControl>
-      <h3 className={cx("input-label")}>Lớp: </h3>
-      <FormControl margin="dense" fullWidth>
-        <Autocomplete
-          clearOnEscape
-          id="class"
-          options={classOptions}
-          renderInput={(params) => <TextField {...params} />}
-          fullWidth
-          isOptionEqualToValue={(option, value) => option.value === value.value}
-          onChange={(e, value) =>
-            setInfo((prev) => ({ ...prev, class: value.value }))
-          }
-        />
-      </FormControl>
-      <h3 className={cx("input-label")}>Ngày nộp: </h3>
-      <FormControl margin="dense" fullWidth>
-        <TextField
-          id="tuition-payment-time"
-          type="date"
-          fullWidth
-          inputProps={{ style: { fontSize: "1.5rem" } }}
-          onChange={(e) =>
-            setInfo((prev) => ({ ...prev, paymentDate: e.target.value }))
-          }
-        />
-      </FormControl>
-      <h3 className={cx("input-label")}>Thời gian: </h3>
-      <FormControl
-        margin="dense"
-        fullWidth
-        sx={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <div className={cx("tuition-time-part")}>
-          <h4>Từ: </h4>
-          <TextField
-            id="tuition-time-start"
-            type="date"
-            fullWidth
-            inputProps={{ style: { fontSize: "1.5rem" } }}
-            onChange={(e) =>
-              setInfo((prev) => ({ ...prev, startTime: e.target.value }))
-            }
-          />
+      </div>
+      <div className={cx("form-control")}>
+        <label className={cx("input-label")} htmlFor="class">
+          Lớp:{" "}
+        </label>
+        <select name="class" id="class">
+          {classOptions.map((option) => (
+            <option value={option.value}>{option.label}</option>
+          ))}
+        </select>
+      </div>
+      <div className={cx("form-control")}>
+        <label className={cx("input-label")} htmlFor="payment-date">
+          Thời gian nộp học phí:{" "}
+        </label>
+        <input type="date" id="payment-date" name="payment-date" />
+      </div>
+      <div className="form-control">
+        <p className={cx("input-label")}>Thời gian học:</p>
+        <div className={cx("learn-date-part")}>
+          <label className={cx("input-label")} htmlFor="start-date">
+            Từ:{" "}
+          </label>
+          <input type="date" id="start-date" name="start-date" />
         </div>
-        <div className={cx("tuition-time-part")}>
-          <h4>Đến: </h4>
-          <TextField
-            id="tuition-time-end"
-            type="date"
-            fullWidth
-            inputProps={{ style: { fontSize: "1.5rem" } }}
-            onChange={(e) =>
-              setInfo((prev) => ({ ...prev, endTime: e.target.value }))
-            }
-          />
+        <div className={cx("learn-date-part")}>
+          <label className={cx("input-label")} htmlFor="end-date">
+            Đến:{" "}
+          </label>
+          <input type="date" id="end-date" name="end-date" />
         </div>
-      </FormControl>
-      <h3 className={cx("input-label")}>Học phí: </h3>
-      <FormControl margin="dense" fullWidth>
-        <TextField
-          id="tuition-fee"
+      </div>
+      <div className={cx("form-control")}>
+        <label className={cx("input-label")} htmlFor="amount">
+          Học phí:{" "}
+        </label>
+        <input
           type="number"
-          fullWidth
-          inputProps={{ style: { fontSize: "1.5rem" } }}
-          onChange={(e) =>
-            setInfo((prev) => ({ ...prev, amount: +e.target.value }))
-          }
+          id="amount"
+          autoComplete="amount"
+          placeholder="Enter tuition payment..."
         />
         <span>{"(VNĐ)"}</span>
-      </FormControl>
-      <h3 className={cx("input-label")}>Phương thức thanh toán: </h3>
-      <FormControl fullWidth margin="dense">
-        <Autocomplete
-          clearOnEscape
-          id="payment"
-          options={paymentOptions}
-          renderInput={(params) => <TextField {...params} />}
-          fullWidth
-          onChange={(e, value) =>
-            setInfo((prev) => ({ ...prev, paymentMethod: value.label }))
-          }
-        />
-      </FormControl>
+      </div>
+      <div className={cx("form-control")}>
+        <label className={cx("input-label")} htmlFor="payment-method">
+          Phương thức thanh toán:{" "}
+        </label>
+        <select name="payment-method" id="payment-method">
+          {paymentOptions.map((option) => (
+            <option value={option.label}>{option.label}</option>
+          ))}
+        </select>
+      </div>
       <Button
+        type="submit"
         variant="contained"
         size="large"
         sx={{
@@ -137,7 +109,7 @@ function InvoiceForm() {
           marginTop: "10px",
           fontSize: "1.5rem",
         }}
-        onClick={updateInvoice}
+        onClick={handleSubmit(updateInvoice)}
       >
         Cập nhật
       </Button>
