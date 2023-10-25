@@ -1,0 +1,36 @@
+.form {
+    display: block;
+    width: 100%;
+    font-size: 1rem;
+    .form-control {
+        margin: 20px 0;
+        position: relative;
+    }
+}
+
+.title {
+    font-size: 1.8rem;
+}
+
+
+.input-label {
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+.learn-date {
+    display: flex;
+    gap: 10px;
+}
+
+.learn-date-part {
+    width: 100%;
+    position: relative;
+}
+
+.error-msg {
+    position: absolute;
+    left: 0;
+    bottom: -14px;
+    color: red;
+}

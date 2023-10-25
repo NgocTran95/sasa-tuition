@@ -1,38 +1,5 @@
-.form {
-    font-size: 1rem;
-    .form-control {
-        margin-top: 5px;
-    }
-}
-
-.title {
-    font-size: 1.8rem;
+.container {
+    flex: 1;
 }
 
 
-.input-label {
-    font-size: 1.2rem;
-    margin-top: 10px;
-}
-
-.learn-date-part {
-    display: inline-block;
-    width: 48%;
-    margin-left: 5px;
-}
-
-.error-msg {
-    color: red;
-}
-
-@media (min-width: 1023px) {
-    .form {
-        width: 50%;
-    }
-}
-
-@media (min-width: 1375px) {
-    .form {
-        width: 60%;
-    } 
-}

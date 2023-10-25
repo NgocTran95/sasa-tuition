@@ -17,8 +17,9 @@ function DownloadButton( { domEl }) {
     <div className={cx("container")}>
       <Button
         variant="contained"
-        color="success"
+        color="primary"
         className={cx("download-btn")}
+        style={{ fontSize: '14px' }}
         onClick={downloadImage}
       >
         Tải về
