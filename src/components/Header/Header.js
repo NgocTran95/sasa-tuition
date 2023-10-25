@@ -24,7 +24,7 @@ const navOptions = [
     id: 2,
     path: "/add-student",
     icon: faUserPlus,
-    content: "Thêm thông tin học sinh",
+    content: "Thông tin học sinh",
   },
   {
     id: 3,

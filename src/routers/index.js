@@ -1,6 +1,6 @@
 import LoginPage from "../pages/LoginPage";
 import EnterInfoPage from "../pages/EnterInfoPage";
-import AddStudentPage from "../pages/AddStudentPage";
+import StudentPage from "../pages/StudentPage";
 import ExportTuitionPage from "../pages/ExportTuitionPage";
 
 import MainLayout from "../layouts/MainLayout";
@@ -11,7 +11,7 @@ const publicRoutes = [
   {
     id: 3,
     path: "/add-student",
-    component: AddStudentPage,
+    component: StudentPage,
     layout: MainLayout,
   },
   { id: 4, path: "/query", component: ExportTuitionPage, layout: MainLayout },

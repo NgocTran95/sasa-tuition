@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 import { Autocomplete, TextField } from "@mui/material";
 
-import styles from "./StudentForm.module.scss";
+import styles from "./SelectStudentForm.module.scss";
 
 const classOptions = [
   { label: "Lớp 6", value: 6 },
@@ -11,14 +11,14 @@ const classOptions = [
 ];
 
 const studentOptions = [
-    { label: 'Trần Minh Ngọc'},
-    { label: 'Hồ Thị Sa'},
-    { label: 'Hồ Thị Pha'},
-    { label: 'Trần Thị Ánh Hồng'},
-]
+  { label: "Trần Minh Ngọc" },
+  { label: "Hồ Thị Sa" },
+  { label: "Hồ Thị Pha" },
+  { label: "Trần Thị Ánh Hồng" },
+];
 
 const cx = classNames.bind(styles);
-function StudentForm() {
+function SelectStudentForm() {
   return (
     <div className={cx("container")}>
       <h2 className={cx("title")}>Nhập thông tin học sinh</h2>
@@ -62,4 +62,4 @@ function StudentForm() {
   );
 }
 
-export default StudentForm;
+export default SelectStudentForm;
