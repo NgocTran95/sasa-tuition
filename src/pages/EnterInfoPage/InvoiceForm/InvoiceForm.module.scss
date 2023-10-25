@@ -1,9 +1,14 @@
 .form {
     font-size: 1rem;
+    .form-control {
+        margin-top: 5px;
+    }
 }
+
 .title {
     font-size: 1.8rem;
 }
+
 
 .input-label {
     font-size: 1.2rem;
@@ -11,7 +16,13 @@
 }
 
 .learn-date-part {
+    display: inline-block;
     width: 48%;
+    margin-left: 5px;
+}
+
+.error-msg {
+    color: red;
 }
 
 @media (min-width: 1023px) {

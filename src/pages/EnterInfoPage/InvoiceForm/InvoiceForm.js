@@ -2,14 +2,10 @@ import classNames from "classnames/bind";
 import {
   TextField,
   Autocomplete,
-  FormControl,
   Button,
-  Container,
 } from "@mui/material";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 
-import { validateEnterInfoSchema } from "../../../validateForm/validateSchema";
 import styles from "./InvoiceForm.module.scss";
 
 const classOptions = [
@@ -25,42 +21,45 @@ function InvoiceForm() {
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(validateEnterInfoSchema) });
+  } = useForm();
 
-  const updateInvoice = (data) => {
+  const onSubmit = (data) => {
     console.log(data);
   };
   return (
-    <form className={cx("form")} onSubmit={handleSubmit(updateInvoice)}>
+    <form className={cx("form")} onSubmit={handleSubmit(onSubmit)}>
       <h2 className={cx("title")}>Điền thông tin học phí</h2>
       <div className={cx("form-control")}>
-        <label className={cx("input-label")} htmlFor="student-name">
+        <label className={cx("input-label")} htmlFor="studentName">
           Họ và tên:{" "}
         </label>
-        <input
+        <TextField
           type="text"
-          id="student-name"
-          autoComplete="student-name"
-          placeholder="Enter student name..."
+          id="studentName"
+          name="studentName"
+          placeholder="Nhập họ và tên học sinh..."
+          fullWidth
+          {...register('studentName', { required: 'Bạn chưa nhập tên học sinh'})}
         />
+        {errors.studentName && errors.studentName.type === "required" && (
+        <span className={cx('error-msg')}>{errors.studentName.message}</span>
+      )}
       </div>
       <div className={cx("form-control")}>
         <label className={cx("input-label")} htmlFor="class">
           Lớp:{" "}
         </label>
-        <select name="class" id="class">
-          {classOptions.map((option) => (
-            <option value={option.value}>{option.label}</option>
-          ))}
-        </select>
+        <Autocomplete name="class" id="class" options={classOptions} isOptionEqualToValue={(option,value) => option.value === value.value } renderInput={(params) => <TextField {...params} {...register('class', { required: 'Bạn chưa nhập thông tin lớp'})}/>}/>
+        {errors.class && errors.class.type === "required" && (
+        <span className={cx('error-msg')}>{errors.class.message}</span>
+      )}
       </div>
       <div className={cx("form-control")}>
         <label className={cx("input-label")} htmlFor="payment-date">
           Thời gian nộp học phí:{" "}
         </label>
-        <input type="date" id="payment-date" name="payment-date" />
+        <TextField type="date" id="payment-date" name="payment-date"  fullWidth {...register('payment-date', { required: 'Bạn chưa nhập ngày nộp học phí'})}/>
       </div>
       <div className="form-control">
         <p className={cx("input-label")}>Thời gian học:</p>
@@ -68,36 +67,27 @@ function InvoiceForm() {
           <label className={cx("input-label")} htmlFor="start-date">
             Từ:{" "}
           </label>
-          <input type="date" id="start-date" name="start-date" />
+          <TextField type="date" id="start-date" name="start-date"  fullWidth {...register('start-date', { required: 'Bạn chưa nhập ngày bắt đầu học'})}/>
         </div>
         <div className={cx("learn-date-part")}>
           <label className={cx("input-label")} htmlFor="end-date">
             Đến:{" "}
           </label>
-          <input type="date" id="end-date" name="end-date" />
+          <TextField type="date" id="end-date" name="end-date"  fullWidth {...register('end-date', { required: 'Bạn chưa nhập ngày kết thúc học'})}/>
         </div>
       </div>
       <div className={cx("form-control")}>
         <label className={cx("input-label")} htmlFor="amount">
           Học phí:{" "}
         </label>
-        <input
-          type="number"
-          id="amount"
-          autoComplete="amount"
-          placeholder="Enter tuition payment..."
-        />
+        <TextField type="number" id="amount" name="amount"  fullWidth {...register('amount', { required: 'Bạn chưa nhập số tiền đóng học phí'})}/>
         <span>{"(VNĐ)"}</span>
       </div>
       <div className={cx("form-control")}>
-        <label className={cx("input-label")} htmlFor="payment-method">
+        <label className={cx("input-label")} htmlFor="method">
           Phương thức thanh toán:{" "}
         </label>
-        <select name="payment-method" id="payment-method">
-          {paymentOptions.map((option) => (
-            <option value={option.label}>{option.label}</option>
-          ))}
-        </select>
+        <Autocomplete name="method" id="method" options={paymentOptions} renderInput={(params) => <TextField {...params} {...register('method')}/>}/>
       </div>
       <Button
         type="submit"
@@ -109,7 +99,7 @@ function InvoiceForm() {
           marginTop: "10px",
           fontSize: "1.5rem",
         }}
-        onClick={handleSubmit(updateInvoice)}
+        onClick={handleSubmit(onSubmit)}
       >
         Cập nhật
       </Button>
