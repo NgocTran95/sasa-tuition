@@ -1,8 +1,9 @@
 import classNames from "classnames/bind";
-import { TextField, Autocomplete, Button } from "@mui/material";
+import { TextField, Autocomplete } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 import styles from "./PaymentInfo.module.scss";
+import UpdateButton from "../UpdateButton";
 
 const paymentOptions = [{ label: "Chuyển khoản" }, { label: "Tiền mặt" }];
 const cx = classNames.bind(styles);
@@ -122,20 +123,7 @@ function PaymentInfo() {
           <span className={cx("error-msg")}>{errors.method.message}</span>
         )}
       </div>
-      <Button
-        type="submit"
-        variant="contained"
-        size="large"
-        sx={{
-          minHeight: "50px",
-          width: "100%",
-          marginTop: "10px",
-          fontSize: "1.5rem",
-        }}
-        onClick={handleSubmit(onSubmit)}
-      >
-        Cập nhật
-      </Button>
+      <UpdateButton onClick={handleSubmit(onSubmit)} />
     </form>
   );
 }
