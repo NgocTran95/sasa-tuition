@@ -1,8 +1,8 @@
 import classNames from "classnames/bind";
 import { TextField, Autocomplete } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { doc, collection, query, orderBy, onSnapshot, setDoc, serverTimestamp } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { doc, collection, setDoc, serverTimestamp } from "firebase/firestore";
+import { useContext } from "react";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -11,31 +11,16 @@ import { classOptions } from "../../../constants";
 import UpdateButton from "../../../components/UpdateButton";
 import { db } from "../../../firebase/config";
 import { generateRandomId } from "../../../utilities";
+import { AppContext } from "../../../context/AppProvider";
 
 const cx = classNames.bind(styles);
 function EnterStudentForm() {
-  const [students, setStudents] = useState([]);
+  const { students } = useContext(AppContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  useEffect(() => {
-    const studentsRef = collection(db, "students");
-    const querySnapshot = query(studentsRef, orderBy("createAt", "asc"));
-    const unsubcribed = onSnapshot(querySnapshot, (snapshot) => {
-      const documents = snapshot.docs.map((doc) => ({
-        uid: doc.data().uid,
-        name: doc.data().name,
-        class: doc.data().class,
-        createAt: doc.data().createAt,
-      }));
-      setStudents(documents);
-    });
-    return () => {
-      unsubcribed();
-    };
-  },);
   const onSubmit = async ({ enterStudentName, enterClass }) => {
     const studentClass = +enterClass.slice(-1);
     const studentRef = doc(collection(db, 'students'));
@@ -44,7 +29,7 @@ function EnterStudentForm() {
       toast.error('Dữ liệu đã tồn tại!')
     } else {
       await setDoc(studentRef, {
-        uid: generateRandomId(12),
+        uid: generateRandomId(20),
         name: enterStudentName,
         class: studentClass,
         createAt: serverTimestamp(),
