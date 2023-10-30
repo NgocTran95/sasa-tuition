@@ -11,6 +11,12 @@ const defaultContextValue = {
   // select class
   selectedClass: null,
   setSelectedClass: () => {},
+  // modal toggle
+  openModal: false,
+  setOpenModal: () => {},
+  //delete student
+  deleteStudent: null,
+  setDeleteStudent: () => {},
 };
 
 export const AppContext = createContext(defaultContextValue);
@@ -19,6 +25,8 @@ function AppProvider({ children }) {
   const [students, setStudents] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [deleteStudent, setDeleteStudent] = useState(null);
   useEffect(() => {
     const studentsRef = collection(db, "students");
     const querySnapshot = query(studentsRef, orderBy("createAt", "asc"));
@@ -43,6 +51,10 @@ function AppProvider({ children }) {
         setSelectedStudent,
         selectedClass,
         setSelectedClass,
+        openModal,
+        setOpenModal,
+        deleteStudent,
+        setDeleteStudent,
       }}
     >
       {children}

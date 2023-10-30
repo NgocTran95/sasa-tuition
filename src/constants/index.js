@@ -4,6 +4,12 @@ const classOptions = [
   { label: "Lớp 8", value: 8 },
   { label: "Lớp 9", value: 9 },
 ];
+const minimumClassOptions = [
+  { label: "6", value: 6 },
+  { label: "7", value: 7 },
+  { label: "8", value: 8 },
+  { label: "9", value: 9 },
+];
 
 const studentOptions = [
   { label: "Trần Minh Ngọc", class: 7 },
@@ -12,4 +18,4 @@ const studentOptions = [
   { label: "Trần Thị Ánh Hồng", class: 6 },
 ];
 
-export { classOptions, studentOptions };
+export { classOptions, studentOptions, minimumClassOptions };

@@ -123,7 +123,7 @@ function PaymentInfo() {
           <span className={cx("error-msg")}>{errors.method.message}</span>
         )}
       </div>
-      <UpdateButton onClick={handleSubmit(onSubmit)} />
+      <UpdateButton sx={{ mt: 1, width: '100%', minHeight: '45px'}} onClick={handleSubmit(onSubmit)} />
     </form>
   );
 }

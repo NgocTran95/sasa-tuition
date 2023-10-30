@@ -85,7 +85,7 @@ function EnterStudentForm() {
           <span className={cx("error-msg")}>{errors.enterClass.message}</span>
         )}
       </div>
-      <UpdateButton onClick={handleSubmit(onSubmit)} content={"Thêm mới"} />
+      <UpdateButton onClick={handleSubmit(onSubmit)} sx={{ mt: 1, width: '100%', minHeight: '45px'}} content={"Thêm mới"} />
     </form>
   );
 }
