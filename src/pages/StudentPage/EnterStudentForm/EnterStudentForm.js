@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { doc, collection, setDoc, serverTimestamp } from "firebase/firestore";
 import { useContext } from "react";
 import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 import styles from "./EnterStudentForm.module.scss";
 import { classOptions } from "../../../constants";
@@ -23,17 +23,24 @@ function EnterStudentForm() {
   } = useForm();
   const onSubmit = async ({ enterStudentName, enterClass }) => {
     const studentClass = +enterClass.slice(-1);
-    const studentRef = doc(collection(db, 'students'));
-    const isExist = students.some((student) => student.name === enterStudentName && student.class === studentClass);
+    const studentRef = doc(collection(db, "students"));
+    const isExist = students.some(
+      (student) =>
+        student.name === enterStudentName && student.class === studentClass
+    );
     if (isExist) {
-      toast.error('Dữ liệu đã tồn tại!')
+      toast.error("Dữ liệu đã tồn tại!");
     } else {
       await setDoc(studentRef, {
         uid: generateRandomId(20),
         name: enterStudentName,
         class: studentClass,
         createAt: serverTimestamp(),
-      }).then(toast.success(`Thêm thành công ${enterStudentName} - lớp ${studentClass}`))
+      }).then(
+        toast.success(
+          `Thêm thành công ${enterStudentName} - lớp ${studentClass}`
+        )
+      );
     }
   };
   return (
@@ -85,7 +92,11 @@ function EnterStudentForm() {
           <span className={cx("error-msg")}>{errors.enterClass.message}</span>
         )}
       </div>
-      <UpdateButton onClick={handleSubmit(onSubmit)} sx={{ mt: 1, width: '100%', minHeight: '45px'}} content={"Thêm mới"} />
+      <UpdateButton
+        onClick={handleSubmit(onSubmit)}
+        sx={{ mt: 1, width: "100%", minHeight: "45px", fontSize: "1.4rem" }}
+        content={"Thêm mới"}
+      />
     </form>
   );
 }

@@ -58,7 +58,7 @@ function DeleteStudentModal({ student }) {
         </Typography>
         <Typography
           id="modal-modal-subdescription"
-          sx={{ mt: 2, mb: 2, fontSize: "1.4rem" }}
+          sx={{ mt: '10px', mb: '50px', fontSize: "1.4rem" }}
         >
           Nếu bạn xóa học sinh này, mọi thông tin hóa đơn cũng xóa theo.
         </Typography>
