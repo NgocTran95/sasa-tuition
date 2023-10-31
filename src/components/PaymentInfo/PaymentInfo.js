@@ -1,9 +1,14 @@
 import classNames from "classnames/bind";
 import { TextField, Autocomplete } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { useContext } from "react";
 
 import styles from "./PaymentInfo.module.scss";
 import UpdateButton from "../UpdateButton";
+import { AppContext } from '../../context/AppProvider';
+import { db } from "../../firebase/config";
+import { toast } from "react-toastify";
 
 const paymentOptions = [{ label: "Chuyển khoản" }, { label: "Tiền mặt" }];
 const cx = classNames.bind(styles);
@@ -15,8 +20,18 @@ function PaymentInfo() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const { selectedStudent } = useContext(AppContext);
+
+  const onSubmit = async(data) => {
+    const { paymentDate } = data;
+    const year = +paymentDate.slice(0, 4);
+    const invoicesRef = doc(collection(db, "invoices"));
+    await setDoc(invoicesRef, {
+      studentUid: selectedStudent.uid,
+      year,
+      ...data,
+      createAt: serverTimestamp(),
+    }).then(() => toast.success('Cập nhật thông tin hóa đơn thành công.'))
   };
   return (
     <form className={cx("form")} onSubmit={handleSubmit(onSubmit)}>

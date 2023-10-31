@@ -1,6 +1,5 @@
 import classNames from "classnames/bind";
 import { Autocomplete, TextField } from "@mui/material";
-
 import { useContext } from "react";
 
 import styles from "./SelectStudentForm.module.scss";
@@ -8,12 +7,14 @@ import { AppContext } from "../../context/AppProvider";
 
 const cx = classNames.bind(styles);
 function SelectStudentForm() {
-
-  const { students, setSelectedStudent, selectedStudent } = useContext(AppContext);
-  const defaultProps = {
-    options: students,
-    getOptionLabel: (option) => option.name + ' - Lớp ' + option.class,
-  };
+  const {
+    students,
+    selectedStudent,
+    setSelectedStudent,
+    selectedYear,
+    setSelectedYear,
+  } = useContext(AppContext);
+  console.log(selectedStudent, selectedYear);
   return (
     <div className={cx("container")}>
       <h2 className={cx("title")}>Chọn học sinh</h2>
@@ -22,14 +23,10 @@ function SelectStudentForm() {
           Họ và tên:{" "}
         </label>
         <Autocomplete
-          name="selectStudent"
-          id="selectStudent"
-          {...defaultProps}
-          onChange={(event, newValue) => {
-            setSelectedStudent(newValue);
-          }}
-          value={selectedStudent}
+          options={students}
+          getOptionLabel={(option) => option.name + " - Lớp " + option.class}
           isOptionEqualToValue={(option, value) => option.label === value.label}
+          onChange={(e, value) => setSelectedStudent(value)}
           renderInput={(params) => (
             <TextField
               placeholder="Chọn học sinh..."
@@ -37,6 +34,16 @@ function SelectStudentForm() {
               inputProps={{ ...params.inputProps, style: { fontSize: 14 } }}
             />
           )}
+        />
+      </div>
+      <div className={cx("form-control")}>
+        <label className={cx("input-label")} htmlFor="selectYear">
+          Năm:{" "}
+        </label>
+        <TextField
+          type="number"
+          sx={{ fontSize: '1.4rem', width: "100%" }}
+          onChange={(e) => setSelectedYear(+e.target.value)}
         />
       </div>
     </div>
