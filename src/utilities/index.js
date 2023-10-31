@@ -9,3 +9,14 @@ export const generateRandomId = (length) => {
   }
   return randomId;
 };
+
+export const formatPaymentDate = (date) => {
+  const arr = date.split("-");
+  return arr.reverse().join("/");
+};
+
+export const formatLearnProcess = (startDate, endDate) => {
+  const startDateArr = startDate.split("-");
+  const endDateArr = endDate.split("-");
+  return startDateArr[2]+'/'+startDateArr[1]+' - '+ endDateArr[2]+'/'+endDateArr[1];
+};

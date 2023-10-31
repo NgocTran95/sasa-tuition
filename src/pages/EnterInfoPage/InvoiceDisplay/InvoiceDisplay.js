@@ -4,6 +4,7 @@ import { useContext, useRef } from "react";
 import DownloadButton from "../../../components/DownloadButton";
 import styles from "./InvoiceDisplay.module.scss";
 import { AppContext } from "../../../context/AppProvider";
+import { formatLearnProcess, formatPaymentDate } from "../../../utilities";
 
 const cx = classNames.bind(styles);
 function InvoiceDisplay() {
@@ -19,18 +20,18 @@ function InvoiceDisplay() {
       </div>
       <div className={cx("content")}>
         {invoices.map((invoice) => (
-          <div className={cx("row")}>
+          <div className={cx("row")} key={invoice.createAt}>
             <div className={cx("item", "payment-time")}>
-              {invoice.paymentDate}
+              {formatPaymentDate(invoice?.paymentDate)}
             </div>
             <div className={cx("item", "learn-time")}>
-              {invoice.startDate} - {invoice.endDate}
+              {formatLearnProcess(invoice?.startDate, invoice?.endDate)}
             </div>
             <div className={cx("item", "tuition-fee")}>
               {invoice.amount / 1000}k
             </div>
             <div className={cx("item", "confirm")}>Đã thu</div>
-            <div className={cx("item", "note")}>{invoice.method}</div>
+            <div className={cx("item", "note")}>{invoice.method === 'Chuyển khoản' ? 'CK': 'Cash'}</div>
           </div>
         ))}
       </div>

@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 import { Autocomplete, IconButton, TextField } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { updateDoc, doc } from "firebase/firestore";

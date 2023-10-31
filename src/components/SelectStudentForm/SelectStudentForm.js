@@ -7,14 +7,8 @@ import { AppContext } from "../../context/AppProvider";
 
 const cx = classNames.bind(styles);
 function SelectStudentForm() {
-  const {
-    students,
-    selectedStudent,
-    setSelectedStudent,
-    selectedYear,
-    setSelectedYear,
-  } = useContext(AppContext);
-  console.log(selectedStudent, selectedYear);
+  const { students, setSelectedStudent, setSelectedYear } =
+    useContext(AppContext);
   return (
     <div className={cx("container")}>
       <h2 className={cx("title")}>Chọn học sinh</h2>
@@ -42,7 +36,7 @@ function SelectStudentForm() {
         </label>
         <TextField
           type="number"
-          sx={{ fontSize: '1.4rem', width: "100%" }}
+          sx={{ fontSize: "1.4rem", width: "100%" }}
           onChange={(e) => setSelectedYear(+e.target.value)}
         />
       </div>

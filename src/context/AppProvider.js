@@ -58,28 +58,30 @@ function AppProvider({ children }) {
   });
   useEffect(() => {
     const invoicesRef = collection(db, "invoices");
-    const querySnapshot = query(
-      invoicesRef,
-      where("studentUid", "==", selectedStudent?.uid),
-      where("year", "==", selectedYear),
-      orderBy("paymentDate", "asc")
-    );
-    const unsubcribed = onSnapshot(querySnapshot, (snapshot) => {
-      const documents = snapshot.docs.map((doc) => ({
-        studentUid: doc.data().studentUid,
-        year: doc.data().year,
-        paymentDate: doc.data().paymentDate,
-        startDate: doc.data().startDate,
-        endDate: doc.data().endDate,
-        amount: doc.data().amount,
-        method: doc.data().method,
-        createAt: doc.data().createAt,
-      }));
-      setInvoices(documents);
-    });
-    return () => {
-      unsubcribed();
-    };
+    if (!!selectedStudent && !!selectedYear) {
+      const querySnapshot = query(
+        invoicesRef,
+        where("studentUid", "==", selectedStudent?.uid),
+        where("year", "==", selectedYear),
+        orderBy("paymentDate", "asc")
+      );
+      const unsubcribed = onSnapshot(querySnapshot, (snapshot) => {
+        const documents = snapshot.docs.map((doc) => ({
+          studentUid: doc.data().studentUid,
+          year: doc.data().year,
+          paymentDate: doc.data().paymentDate,
+          startDate: doc.data().startDate,
+          endDate: doc.data().endDate,
+          amount: doc.data().amount,
+          method: doc.data().method,
+          createAt: doc.data().createAt,
+        }));
+        setInvoices(documents);
+      });
+      return () => {
+        unsubcribed();
+      };
+    }
   }, [selectedStudent, selectedYear]);
   return (
     <AppContext.Provider
