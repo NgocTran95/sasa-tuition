@@ -1,19 +1,21 @@
 import classNames from "classnames/bind";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 
 import DownloadButton from '../../../components/DownloadButton';
 import styles from "./InvoiceDisplay.module.scss";
+import { AppContext } from "../../../context/AppProvider";
 
 const cx = classNames.bind(styles);
 function InvoiceDisplay() {
   const invoiceUpdate = useRef(null);
+  const { selectedStudent } = useContext(AppContext);
   return (
     <div className={cx("invoice")} id='invoice-update' ref={invoiceUpdate}>
       <div className={cx("information")}>
         <div className={cx("year")}>2023</div>
-        <div className={cx("name")}>Trần Minh Ngọc</div>
+        <div className={cx("name")}>{selectedStudent?.name || ''}</div>
         <div className={cx("subject")}>Toán</div>
-        <div className={cx("class")}>8</div>
+        <div className={cx("class")}>{selectedStudent?.class || ''}</div>
       </div>
       <div className={cx("content")}>
         <div className={cx("row")}>

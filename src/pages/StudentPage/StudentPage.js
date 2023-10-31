@@ -5,7 +5,8 @@ import { useState } from "react";
 
 import styles from "./StudentPage.module.scss";
 import EnterStudentForm from './EnterStudentForm';
-import UpdateStudentInfo from "./UpdateStudentInfo/UpdateStudentInfo";
+import SelectClassForm from '../../components/SelectClassForm';
+import StudentList from "../../components/StudentList/StudentList";
 const cx = classNames.bind(styles);
 
 function CustomTabPanel(props) {
@@ -63,7 +64,8 @@ function StudentPage() {
         <EnterStudentForm />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <UpdateStudentInfo />
+        <SelectClassForm />
+        <StudentList />
       </CustomTabPanel>
     </div>
   );

@@ -11,6 +11,7 @@ function PaymentInfo() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm();
 
@@ -108,6 +109,7 @@ function PaymentInfo() {
           name="method"
           id="method"
           options={paymentOptions}
+          onSelect={() => setError('method', null)}
           isOptionEqualToValue={(option, value) => option.label === value.label}
           renderInput={(params) => (
             <TextField
@@ -123,7 +125,7 @@ function PaymentInfo() {
           <span className={cx("error-msg")}>{errors.method.message}</span>
         )}
       </div>
-      <UpdateButton onClick={handleSubmit(onSubmit)} />
+      <UpdateButton sx={{ mt: 1, width: '100%', minHeight: '45px', fontSize: '1.4rem'}} onClick={handleSubmit(onSubmit)} />
     </form>
   );
 }

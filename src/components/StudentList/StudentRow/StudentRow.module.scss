@@ -1,0 +1,52 @@
+.row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 50px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    .column {
+        text-align: center;
+        height: 100%;
+        position: relative;
+    }
+    .class {
+        width: 10%;
+        position: relative;
+    }
+    .name {
+        width: 50%;
+        position: relative;
+    }
+    .delete, .num-oder, .edit {
+        width: 10%;
+    }
+    .delete {
+        margin-left: 10px;
+    }
+    .edit-btn:hover {
+        color: red;
+    }
+    .edit-field {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .edit {
+        position: relative;
+    }
+    .edit-name {
+        width: 50%;
+    }
+    .edit-class {
+        width: 25%;
+    }
+    .edit-btn-container {
+        width: 15%;
+    }
+    .error-msg {
+        color: red;
+        font-size: 1rem;
+    }
+}
+
