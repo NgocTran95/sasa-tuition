@@ -9,7 +9,6 @@ import UpdateButton from "../UpdateButton";
 import { AppContext } from '../../context/AppProvider';
 import { db } from "../../firebase/config";
 import { toast } from "react-toastify";
-import { generateRandomId } from "../../utilities";
 
 const paymentOptions = [{ label: "Chuyển khoản" }, { label: "Tiền mặt" }];
 const cx = classNames.bind(styles);
@@ -28,8 +27,7 @@ function PaymentInfo() {
     const year = +paymentDate.slice(0, 4);
     const invoicesRef = doc(collection(db, "invoices"));
     await setDoc(invoicesRef, {
-      uid: generateRandomId(20),
-      studentUid: selectedStudent.uid,
+      studentId: selectedStudent.id,
       year,
       ...data,
       createAt: serverTimestamp(),

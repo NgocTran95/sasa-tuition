@@ -28,6 +28,9 @@ const defaultContextValue = {
   //delete student
   deleteStudent: null,
   setDeleteStudent: () => {},
+  // delete invoices when delete student
+  deleteInvoices: [],
+  setDeleteInvoices: () => {},
 };
 
 export const AppContext = createContext(defaultContextValue);
@@ -40,15 +43,17 @@ function AppProvider({ children }) {
   const [invoices, setInvoices] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [deleteStudent, setDeleteStudent] = useState(null);
+  const [deleteInvoices, setDeleteInvoices] = useState([]);
+  // Auto fetch student list from server
   useEffect(() => {
     const studentsRef = collection(db, "students");
     const querySnapshot = query(studentsRef, orderBy("createAt", "asc"));
     const unsubcribed = onSnapshot(querySnapshot, (snapshot) => {
       const documents = snapshot.docs.map((doc) => ({
-        uid: doc.data().uid,
         name: doc.data().name,
         class: doc.data().class,
         createAt: doc.data().createAt,
+        id: doc.id,
       }));
       setStudents(documents);
     });
@@ -56,18 +61,20 @@ function AppProvider({ children }) {
       unsubcribed();
     };
   });
+
+  // Auto fetch student invoices when selected student and year
   useEffect(() => {
     const invoicesRef = collection(db, "invoices");
     if (!!selectedStudent && !!selectedYear) {
       const querySnapshot = query(
         invoicesRef,
-        where("studentUid", "==", selectedStudent?.uid),
+        where("studentId", "==", selectedStudent?.id),
         where("year", "==", selectedYear),
         orderBy("paymentDate", "asc")
       );
       const unsubcribed = onSnapshot(querySnapshot, (snapshot) => {
         const documents = snapshot.docs.map((doc) => ({
-          studentUid: doc.data().studentUid,
+          studentId: doc.data().studentId,
           year: doc.data().year,
           paymentDate: doc.data().paymentDate,
           startDate: doc.data().startDate,
@@ -75,6 +82,7 @@ function AppProvider({ children }) {
           amount: doc.data().amount,
           method: doc.data().method,
           createAt: doc.data().createAt,
+          invoiceId: doc.id,
         }));
         setInvoices(documents);
       });
@@ -83,6 +91,35 @@ function AppProvider({ children }) {
       };
     }
   }, [selectedStudent, selectedYear]);
+
+  // Auto fetch delete invoices when select delete student
+  useEffect(() => {
+    const invoicesRef = collection(db, "invoices");
+    if (deleteStudent) {
+      const querySnapshot = query(
+        invoicesRef,
+        where("studentId", "==", deleteStudent?.id),
+        orderBy("paymentDate", "asc")
+      );
+      const unsubcribed = onSnapshot(querySnapshot, (snapshot) => {
+        const documents = snapshot.docs.map((doc) => ({
+          studentId: doc.data().studentId,
+          year: doc.data().year,
+          paymentDate: doc.data().paymentDate,
+          startDate: doc.data().startDate,
+          endDate: doc.data().endDate,
+          amount: doc.data().amount,
+          method: doc.data().method,
+          createAt: doc.data().createAt,
+          invoiceId: doc.id,
+        }));
+        setDeleteInvoices(documents);
+      });
+      return () => {
+        unsubcribed();
+      };
+    }
+  },[deleteStudent]);
   return (
     <AppContext.Provider
       value={{
@@ -98,6 +135,7 @@ function AppProvider({ children }) {
         setOpenModal,
         deleteStudent,
         setDeleteStudent,
+        deleteInvoices,
       }}
     >
       {children}

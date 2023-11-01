@@ -11,7 +11,6 @@ import styles from "./StudentRow.module.scss";
 import { db } from "../../../firebase/config";
 import { minimumClassOptions } from "../../../constants";
 import { AppContext } from "../../../context/AppProvider";
-import { getStudentId } from "../../../firebase/services";
 import { toast } from "react-toastify";
 import UpdateButton from "../../UpdateButton";
 
@@ -40,17 +39,13 @@ function StudentRow({ student, index }) {
     if (isExist) {
       toast.error("Dữ liệu đã tồn tại.");
     } else {
-      await getStudentId(student.uid)
-        .then((studentId) => {
-          updateDoc(doc(db, "students", studentId[0].id), {
-            name: data.name,
-            class: +data.class.slice(-1),
-          });
-        })
-        .finally(() => {
-          setEdit(false);
-          toast.success("Đã cập nhật thành công");
-        });
+      updateDoc(doc(db, "students", student.id), {
+        name: data.name,
+        class: +data.class.slice(-1),
+      }).finally(() => {
+        setEdit(false);
+        toast.success("Đã cập nhật thành công");
+      });
     }
   };
   return (
@@ -103,8 +98,8 @@ function StudentRow({ student, index }) {
               isOptionEqualToValue={(option, value) =>
                 option.label === value.label
               }
-              sx={{ height: '100%'}}
-              onSelect={() => setError('class', null)}
+              sx={{ height: "100%" }}
+              onSelect={() => setError("class", null)}
               renderInput={(params) => (
                 <TextField
                   {...params}

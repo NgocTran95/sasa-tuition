@@ -28,7 +28,7 @@ function StudentList() {
           <div className={cx('notification')}>Không có dữ liệu</div>
         ) : (
           studentList.map((student, index) => (
-            <StudentRow student={student} index={index} key={student.uid}/>
+            <StudentRow student={student} index={index} key={student.id}/>
           ))
         )}
       </div>

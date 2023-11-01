@@ -10,7 +10,6 @@ import styles from "./EnterStudentForm.module.scss";
 import { classOptions } from "../../../constants";
 import UpdateButton from "../../../components/UpdateButton";
 import { db } from "../../../firebase/config";
-import { generateRandomId } from "../../../utilities";
 import { AppContext } from "../../../context/AppProvider";
 
 const cx = classNames.bind(styles);
@@ -32,7 +31,6 @@ function EnterStudentForm() {
       toast.error("Dữ liệu đã tồn tại!");
     } else {
       await setDoc(studentRef, {
-        uid: generateRandomId(20),
         name: enterStudentName,
         class: studentClass,
         createAt: serverTimestamp(),

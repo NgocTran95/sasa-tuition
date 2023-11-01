@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
 
 import { AppContext } from "../../context/AppProvider";
-import { getStudentId } from "../../firebase/services";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { toast } from "react-toastify";
@@ -19,13 +18,15 @@ const style = {
   p: 4,
 };
 function DeleteStudentModal({ student }) {
-  const { openModal, setOpenModal } = useContext(AppContext);
+  const { openModal, setOpenModal, deleteInvoices } = useContext(AppContext);
   const handleClose = () => setOpenModal(false);
 
   const deleteStudent = async () => {
-    await getStudentId(student.uid)
-      .then((studentId) => {
-        deleteDoc(doc(db, "students", studentId[0].id));
+    await deleteDoc(doc(db, "students", student.id))
+      .then(() => {
+        deleteInvoices.forEach((invoice) =>
+          deleteDoc(doc(db, "invoices", invoice.invoiceId))
+        );
       })
       .finally(() => {
         setOpenModal(false);
@@ -58,7 +59,7 @@ function DeleteStudentModal({ student }) {
         </Typography>
         <Typography
           id="modal-modal-subdescription"
-          sx={{ mt: '10px', mb: '50px', fontSize: "1.4rem" }}
+          sx={{ mt: "10px", mb: "50px", fontSize: "1.4rem" }}
         >
           Nếu bạn xóa học sinh này, mọi thông tin hóa đơn cũng xóa theo.
         </Typography>
