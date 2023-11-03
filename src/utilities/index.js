@@ -18,5 +18,26 @@ export const formatPaymentDate = (date) => {
 export const formatLearnProcess = (startDate, endDate) => {
   const startDateArr = startDate.split("-");
   const endDateArr = endDate.split("-");
-  return startDateArr[2]+'/'+startDateArr[1]+' - '+ endDateArr[2]+'/'+endDateArr[1];
+  return (
+    startDateArr[2] +
+    "/" +
+    startDateArr[1] +
+    " - " +
+    endDateArr[2] +
+    "/" +
+    endDateArr[1]
+  );
+};
+
+export const getMiddleMonth = (startDate, endDate) => {
+  const startParts = startDate.split("-");
+  const endParts = endDate.split("-");
+
+  const start = new Date(startParts[0], startParts[1] - 1, startParts[2]);
+  const end = new Date(endParts[0], endParts[1] - 1, endParts[2]);
+
+  const middleTimeStamp = (start.getTime() + end.getTime()) / 2;
+  const middleDate = new Date(middleTimeStamp);
+
+  return middleDate.getMonth()+1;
 };

@@ -31,6 +31,8 @@ const defaultContextValue = {
   // delete invoices when delete student
   deleteInvoices: [],
   setDeleteInvoices: () => {},
+  // get all invoices
+  allInvoices: [],
 };
 
 export const AppContext = createContext(defaultContextValue);
@@ -44,10 +46,11 @@ function AppProvider({ children }) {
   const [openModal, setOpenModal] = useState(false);
   const [deleteStudent, setDeleteStudent] = useState(null);
   const [deleteInvoices, setDeleteInvoices] = useState([]);
+  const [allInvoices, SetAllInvoices] = useState([]);
   // Auto fetch student list from server
   useEffect(() => {
     const studentsRef = collection(db, "students");
-    const querySnapshot = query(studentsRef, orderBy("createAt", "asc"));
+    const querySnapshot = query(studentsRef, orderBy("class", "asc"));
     const unsubcribed = onSnapshot(querySnapshot, (snapshot) => {
       const documents = snapshot.docs.map((doc) => ({
         name: doc.data().name,
@@ -119,7 +122,30 @@ function AppProvider({ children }) {
         unsubcribed();
       };
     }
-  },[deleteStudent]);
+  }, [deleteStudent]);
+
+  // auto fetch all invoices from db
+  useEffect(() => {
+    const invoicesRef = collection(db, "invoices");
+    const querySnapshot = query(invoicesRef, orderBy("year", "asc"));
+    const unsubcribed = onSnapshot(querySnapshot, (snapshot) => {
+      const documents = snapshot.docs.map((doc) => ({
+        studentId: doc.data().studentId,
+        year: doc.data().year,
+        paymentDate: doc.data().paymentDate,
+        startDate: doc.data().startDate,
+        endDate: doc.data().endDate,
+        amount: doc.data().amount,
+        method: doc.data().method,
+        createAt: doc.data().createAt,
+        invoiceId: doc.id,
+      }));
+      SetAllInvoices(documents);
+    });
+    return () => {
+      unsubcribed();
+    };
+  });
   return (
     <AppContext.Provider
       value={{
@@ -136,6 +162,7 @@ function AppProvider({ children }) {
         deleteStudent,
         setDeleteStudent,
         deleteInvoices,
+        allInvoices,
       }}
     >
       {children}
