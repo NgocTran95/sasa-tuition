@@ -31,8 +31,11 @@ const defaultContextValue = {
   // delete invoices when delete student
   deleteInvoices: [],
   setDeleteInvoices: () => {},
+  // select year to query invoices
+  queryYear: null,
+  setQueryYear: () => {},
   // get all invoices
-  allInvoices: [],
+  queryInvoices: [],
 };
 
 export const AppContext = createContext(defaultContextValue);
@@ -46,7 +49,8 @@ function AppProvider({ children }) {
   const [openModal, setOpenModal] = useState(false);
   const [deleteStudent, setDeleteStudent] = useState(null);
   const [deleteInvoices, setDeleteInvoices] = useState([]);
-  const [allInvoices, SetAllInvoices] = useState([]);
+  const [queryYear, setQueryYear] = useState(null);
+  const [queryInvoices, setQueryInvoices] = useState([]);
   // Auto fetch student list from server
   useEffect(() => {
     const studentsRef = collection(db, "students");
@@ -63,7 +67,7 @@ function AppProvider({ children }) {
     return () => {
       unsubcribed();
     };
-  });
+  }, []);
 
   // Auto fetch student invoices when selected student and year
   useEffect(() => {
@@ -127,7 +131,7 @@ function AppProvider({ children }) {
   // auto fetch all invoices from db
   useEffect(() => {
     const invoicesRef = collection(db, "invoices");
-    const querySnapshot = query(invoicesRef, orderBy("year", "asc"));
+    const querySnapshot = query(invoicesRef, where("year", "==", queryYear));
     const unsubcribed = onSnapshot(querySnapshot, (snapshot) => {
       const documents = snapshot.docs.map((doc) => ({
         studentId: doc.data().studentId,
@@ -140,12 +144,12 @@ function AppProvider({ children }) {
         createAt: doc.data().createAt,
         invoiceId: doc.id,
       }));
-      SetAllInvoices(documents);
+      setQueryInvoices(documents);
     });
     return () => {
       unsubcribed();
     };
-  });
+  }, [queryYear]);
   return (
     <AppContext.Provider
       value={{
@@ -162,7 +166,8 @@ function AppProvider({ children }) {
         deleteStudent,
         setDeleteStudent,
         deleteInvoices,
-        allInvoices,
+        setQueryYear,
+        queryInvoices,
       }}
     >
       {children}
