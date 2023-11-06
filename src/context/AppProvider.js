@@ -127,7 +127,7 @@ function AppProvider({ children }) {
   // auto fetch all invoices from db
   useEffect(() => {
     const invoicesRef = collection(db, "invoices");
-    const querySnapshot = query(invoicesRef, orderBy("year", "asc"));
+    const querySnapshot = query(invoicesRef);
     const unsubcribed = onSnapshot(querySnapshot, (snapshot) => {
       const documents = snapshot.docs.map((doc) => ({
         studentId: doc.data().studentId,

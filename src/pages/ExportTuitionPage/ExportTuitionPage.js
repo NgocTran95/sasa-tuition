@@ -38,10 +38,7 @@ function ExportTuitionPage() {
   }, [students, allInvoices]);
 
   const headers = [
-    {
-      lable: "Họ và Tên",
-      key: "name",
-    },
+    { label: "Họ Tên", key: "name" },
     { label: "Lớp", key: "class" },
     { label: "Tháng 1", key: "paymentState[Tháng 1]" },
     { label: "Tháng 2", key: "paymentState[Tháng 2]" },
