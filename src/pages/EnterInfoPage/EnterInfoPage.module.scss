@@ -1,4 +1,4 @@
-.container {
+.add-invoices {
     padding: 15px 0;
     display: flex;
     flex-direction: column;
@@ -6,7 +6,7 @@
 }
 
 @media (min-width: 1023px) {
-    .container {
+    .add-invoices {
         flex-direction: row;
         gap: 30px;
     }

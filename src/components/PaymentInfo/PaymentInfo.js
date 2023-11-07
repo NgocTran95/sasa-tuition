@@ -20,14 +20,14 @@ function PaymentInfo() {
     formState: { errors },
   } = useForm();
 
-  const { selectedStudent } = useContext(AppContext);
+  const { addInvoiceStudent } = useContext(AppContext);
 
   const onSubmit = async(data) => {
     const { paymentDate } = data;
     const year = +paymentDate.slice(0, 4);
     const invoicesRef = doc(collection(db, "invoices"));
     await setDoc(invoicesRef, {
-      studentId: selectedStudent.id,
+      studentId: addInvoiceStudent.id,
       year,
       ...data,
       createAt: serverTimestamp(),

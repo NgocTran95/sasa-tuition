@@ -1,25 +1,42 @@
 import classNames from "classnames/bind";
-import { useContext, useRef } from "react";
+import { useContext, useMemo, useRef } from "react";
 
 import DownloadButton from "../../../components/DownloadButton";
 import styles from "./InvoiceDisplay.module.scss";
 import { AppContext } from "../../../context/AppProvider";
-import { formatLearnProcess, formatPaymentDate } from "../../../utilities";
+import {
+  formatLearnProcess,
+  formatPaymentDate,
+  getMiddleMonth,
+} from "../../../utilities";
 
 const cx = classNames.bind(styles);
 function InvoiceDisplay() {
   const invoiceUpdate = useRef(null);
-  const { selectedStudent, selectedYear, invoices } = useContext(AppContext);
+  const { addInvoiceStudent, addInvoiceYear, invoices } =
+    useContext(AppContext);
+  const displayInvoices = useMemo(
+    () =>
+      invoices
+        .filter((invoice) => invoice.studentId === addInvoiceStudent?.id)
+        .filter((invoice) => invoice.year === addInvoiceYear)
+        .sort(
+          (a, b) =>
+            getMiddleMonth(a.startDate, a.endDate) -
+            getMiddleMonth(b.startDate, b.endDate)
+        ),
+    [invoices, addInvoiceStudent, addInvoiceYear]
+  );
   return (
     <div className={cx("invoice")} id="invoice-update" ref={invoiceUpdate}>
       <div className={cx("information")}>
-        <div className={cx("year")}>{selectedYear || ""}</div>
-        <div className={cx("name")}>{selectedStudent?.name || ""}</div>
-        <div className={cx("subject")}>{!!selectedYear && "Toán"}</div>
-        <div className={cx("class")}>{selectedStudent?.class || ""}</div>
+        <div className={cx("year")}>{addInvoiceYear || ""}</div>
+        <div className={cx("name")}>{addInvoiceStudent?.name || ""}</div>
+        <div className={cx("subject")}>{!!addInvoiceYear && "Toán"}</div>
+        <div className={cx("class")}>{addInvoiceStudent?.class || ""}</div>
       </div>
       <div className={cx("content")}>
-        {invoices.map((invoice) => (
+        {displayInvoices.map((invoice) => (
           <div className={cx("row")} key={invoice.createAt}>
             <div className={cx("item", "payment-time")}>
               {formatPaymentDate(invoice?.paymentDate)}
@@ -31,7 +48,9 @@ function InvoiceDisplay() {
               {invoice.amount / 1000}k
             </div>
             <div className={cx("item", "confirm")}>Đã thu</div>
-            <div className={cx("item", "note")}>{invoice.method === 'Chuyển khoản' ? 'CK': 'Cash'}</div>
+            <div className={cx("item", "note")}>
+              {invoice.method === "Chuyển khoản" ? "CK" : "Cash"}
+            </div>
           </div>
         ))}
       </div>
