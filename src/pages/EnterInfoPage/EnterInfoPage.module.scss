@@ -5,6 +5,10 @@
     position: relative;
 }
 
+.update-invoices {
+    padding: 15px 0;
+}
+
 @media (min-width: 1023px) {
     .add-invoices {
         flex-direction: row;

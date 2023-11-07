@@ -6,6 +6,7 @@ import { useContext, useState } from "react";
 import styles from "./EnterInfoPage.module.scss";
 import InvoiceForm from "./InvoiceForm";
 import InvoiceDisplay from "./InvoiceDisplay";
+import InvoiceTable from "./InvoiceTable";
 import SelectStudentForm from "../../components/SelectStudentForm";
 import { AppContext } from "../../context/AppProvider";
 
@@ -46,7 +47,8 @@ function a11yProps(index) {
 
 function EnterInfoPage() {
   const [value, setValue] = useState(0);
-  const { setUpdateInvoiceStudent, setUpdateInvoiceYear } = useContext(AppContext);
+  const { setUpdateInvoiceStudent, setUpdateInvoiceYear } =
+    useContext(AppContext);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -69,7 +71,13 @@ function EnterInfoPage() {
         </div>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <SelectStudentForm setStudent={setUpdateInvoiceStudent} setYear={setUpdateInvoiceYear}/>
+        <div className={cx("update-invoices")}>
+          <SelectStudentForm
+            setStudent={setUpdateInvoiceStudent}
+            setYear={setUpdateInvoiceYear}
+          />
+          <InvoiceTable />
+        </div>
       </CustomTabPanel>
     </>
   );
