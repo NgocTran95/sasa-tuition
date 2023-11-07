@@ -37,7 +37,8 @@ function MainLayout({ children }) {
       <Header />
       <div className={cx("content")}>
         <div className={cx("top-bar")}>
-          <Avatar {...stringAvatar("Trần Ngọc")} />
+          <span className={cx('hello')}>Xin chào Sa Sa</span>
+          <Avatar {...stringAvatar("Hồ Sa")} />
         </div>
         {children}
       </div>
