@@ -6,8 +6,8 @@ import styles from "./SelectStudentForm.module.scss";
 import { AppContext } from "../../context/AppProvider";
 
 const cx = classNames.bind(styles);
-function SelectStudentForm() {
-  const { students, setSelectedStudent, setSelectedYear } =
+function SelectStudentForm( { setStudent, setYear }) {
+  const { students } =
     useContext(AppContext);
   return (
     <div className={cx("container")}>
@@ -20,7 +20,7 @@ function SelectStudentForm() {
           options={students}
           getOptionLabel={(option) => option.name + " - Lớp " + option.class}
           isOptionEqualToValue={(option, value) => option.label === value.label}
-          onChange={(e, value) => setSelectedStudent(value)}
+          onChange={(e, value) => setStudent(value)}
           renderInput={(params) => (
             <TextField
               placeholder="Chọn học sinh..."
@@ -37,7 +37,7 @@ function SelectStudentForm() {
         <TextField
           type="number"
           sx={{ fontSize: "1.4rem", width: "100%" }}
-          onChange={(e) => setSelectedYear(+e.target.value)}
+          onChange={(e) => setYear(+e.target.value)}
         />
       </div>
     </div>

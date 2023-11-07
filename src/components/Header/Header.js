@@ -16,15 +16,15 @@ import { useState } from "react";
 const navOptions = [
   {
     id: 1,
-    path: "/",
-    icon: faFileCirclePlus,
-    content: "Cập nhật học phí",
-  },
-  {
-    id: 2,
     path: "/add-student",
     icon: faUserPlus,
     content: "Thông tin học sinh",
+  },
+  {
+    id: 2,
+    path: "/",
+    icon: faFileCirclePlus,
+    content: "Cập nhật học phí",
   },
   {
     id: 3,
@@ -80,7 +80,12 @@ function Header() {
       <Drawer anchor={"left"} open={showMenu} onClose={closeMenu}>
         <div className={cx("side-menu")}>
           {navOptions.map((option) => (
-            <NavLink to={option.path} key={option.id} className={cx("link")} onClick={closeMenu}>
+            <NavLink
+              to={option.path}
+              key={option.id}
+              className={cx("link")}
+              onClick={closeMenu}
+            >
               <FontAwesomeIcon icon={option.icon} />
               <span className={cx("link-name")}>{option.content}</span>
             </NavLink>

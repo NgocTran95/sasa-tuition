@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
 
 import { AppContext } from "../../context/AppProvider";
@@ -18,9 +18,11 @@ const style = {
   p: 4,
 };
 function DeleteStudentModal({ student }) {
-  const { openModal, setOpenModal, deleteInvoices } = useContext(AppContext);
+  const { openModal, setOpenModal, invoices } = useContext(AppContext);
   const handleClose = () => setOpenModal(false);
-
+  const deleteInvoices = useMemo(() => {
+    return invoices.filter((invoice) => invoice.studentId === student?.id);
+  }, [invoices, student]);
   const deleteStudent = async () => {
     await deleteDoc(doc(db, "students", student.id))
       .then(() => {

@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import { CSVLink } from "react-csv";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 
 import styles from "./ExportTuitionPage.module.scss";
 import { AppContext } from "../../context/AppProvider";
@@ -24,9 +24,11 @@ import { getMiddleMonth } from "../../utilities";
 const cx = classNames.bind(styles);
 
 function ExportTuitionPage() {
-  const { students, queryInvoices, setQueryYear } = useContext(AppContext);
+  const { students, queryYear, setQueryYear, invoices } = useContext(AppContext);
   const [exportData, setExportData] = useState([]);
-
+  const queryInvoices = useMemo(() => {
+    return invoices.filter(invoice => invoice.year === queryYear)
+  }, [queryYear, invoices])
   useEffect(() => {
     let temp = [];
     students.forEach((student) => {
@@ -50,7 +52,6 @@ function ExportTuitionPage() {
     });
     setExportData(temp);
   }, [students, queryInvoices]);
-  console.log(exportData);
   const headers = [
     { label: "Họ và Tên", key: "name" },
     { label: "Lớp", key: "class" },
