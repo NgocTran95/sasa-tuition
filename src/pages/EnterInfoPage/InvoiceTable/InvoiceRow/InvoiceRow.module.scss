@@ -1,0 +1,26 @@
+.row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 50px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    .column {
+        text-align: center;
+    }
+    .month, .method {
+        width: 10%;
+    }
+    .payment-date, .from, .to {
+        width: 12%;
+    }
+    .amount {
+        width: 18%;
+    }
+    .action {
+        width: 13%;
+    }
+    .submit {
+        width: 26%;
+    }
+}

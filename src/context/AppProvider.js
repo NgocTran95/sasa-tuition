@@ -1,10 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import {
-  collection,
-  query,
-  orderBy,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 
 import { db } from "../firebase/config";
 
@@ -22,23 +17,29 @@ const defaultContextValue = {
   // select year to add invoice
   updateInvoiceYear: null,
   setUpdateInvoiceYear: () => {},
-  // invoice list
+  // all invoices
   invoices: [],
   // select class
   selectedClass: null,
   setSelectedClass: () => {},
-  // modal toggle
-  openModal: false,
-  setOpenModal: () => {},
+  // delete student modal toggle
+  deleteStudentModal: false,
+  setDeleteStudentModal: () => {},
   //delete student
   deleteStudent: null,
   setDeleteStudent: () => {},
-
   // select year to query invoices
   queryYear: null,
   setQueryYear: () => {},
-  // get all invoices
-  queryInvoices: [],
+  // edit invoice modal toggle
+  editInvoiceModal: false,
+  setEditInvoiceModal: () => {},
+  // delete invoice modal toggle
+  deleteInvoiceModal: false,
+  setDeleteInvoiceModal: () => {},
+  // set edit invoice
+  editInvoice: null,
+  setEditInvoice: () => {},
 };
 
 export const AppContext = createContext(defaultContextValue);
@@ -55,11 +56,15 @@ function AppProvider({ children }) {
 
   const [invoices, setInvoices] = useState([]);
 
-  const [openModal, setOpenModal] = useState(false);
-
+  const [deleteStudentModal, setDeleteStudentModal] = useState(false);
   const [deleteStudent, setDeleteStudent] = useState(null);
+
+  const [editInvoiceModal, setEditInvoiceModal] = useState(false);
+  const [deleteInvoiceModal, setDeleteInvoiceModal] = useState(false);
+  const [editInvoice, setEditInvoice] = useState(null);
+
   const [queryYear, setQueryYear] = useState(null);
-  // Auto fetch students from db
+  // Fetch students from db
   useEffect(() => {
     const studentsRef = collection(db, "students");
     const querySnapshot = query(studentsRef, orderBy("class", "asc"));
@@ -76,7 +81,7 @@ function AppProvider({ children }) {
       unsubcribed();
     };
   }, []);
-  // auto fetch all invoices from db
+  // Fetch all invoices from db
   useEffect(() => {
     const invoicesRef = collection(db, "invoices");
     const querySnapshot = query(invoicesRef);
@@ -113,8 +118,14 @@ function AppProvider({ children }) {
         setUpdateInvoiceYear,
         selectedClass,
         setSelectedClass,
-        openModal,
-        setOpenModal,
+        deleteStudentModal,
+        setDeleteStudentModal,
+        editInvoiceModal,
+        setEditInvoiceModal,
+        deleteInvoiceModal,
+        setDeleteInvoiceModal,
+        editInvoice,
+        setEditInvoice,
         deleteStudent,
         setDeleteStudent,
         queryYear,

@@ -8,15 +8,15 @@ import { updateDoc, doc } from "firebase/firestore";
 import { useContext } from "react";
 
 import styles from "./StudentRow.module.scss";
-import { db } from "../../../firebase/config";
-import { minimumClassOptions } from "../../../constants";
-import { AppContext } from "../../../context/AppProvider";
+import { db } from "../../../../firebase/config";
+import { minimumClassOptions } from "../../../../constants";
+import { AppContext } from "../../../../context/AppProvider";
 import { toast } from "react-toastify";
-import UpdateButton from "../../UpdateButton";
+import UpdateButton from "../../../../components/UpdateButton";
 
 const cx = classNames.bind(styles);
 function StudentRow({ student, index }) {
-  const { students, setOpenModal, setDeleteStudent } = useContext(AppContext);
+  const { students, setDeleteStudentModal , setDeleteStudent } = useContext(AppContext);
   const [edit, setEdit] = useState(false);
 
   const toggleEdit = () => {
@@ -69,7 +69,7 @@ function StudentRow({ student, index }) {
             sx={{ minHeight: "45px", aspectRatio: 1 }}
             onClick={() => {
               setDeleteStudent(student);
-              setOpenModal(true);
+              setDeleteStudentModal(true);
             }}
           >
             <FontAwesomeIcon icon={faTrash} />

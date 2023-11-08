@@ -11,15 +11,16 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: '40%',
+  minWidth: 350,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  borderRadius: '10px',
   boxShadow: 24,
   p: 4,
 };
 function DeleteStudentModal({ student }) {
-  const { openModal, setOpenModal, invoices } = useContext(AppContext);
-  const handleClose = () => setOpenModal(false);
+  const { deleteStudentModal, setDeleteStudentModal, invoices } = useContext(AppContext);
+  const handleClose = () => setDeleteStudentModal(false);
   const deleteInvoices = useMemo(() => {
     return invoices.filter((invoice) => invoice.studentId === student?.id);
   }, [invoices, student]);
@@ -31,14 +32,14 @@ function DeleteStudentModal({ student }) {
         );
       })
       .finally(() => {
-        setOpenModal(false);
+        setDeleteStudentModal(false);
         toast.warning(`Đã xóa ${student?.name} - Lớp ${student.class}`);
       });
   };
 
   return (
     <Modal
-      open={openModal}
+      open={deleteStudentModal}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"

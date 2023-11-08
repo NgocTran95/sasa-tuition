@@ -15,6 +15,11 @@ export const formatPaymentDate = (date) => {
   return arr.reverse().join("/");
 };
 
+export const formatShortDate = (date) => {
+  const arr = date.split("-");
+  return arr[2] + "-" + arr[1];
+};
+
 export const formatLearnProcess = (startDate, endDate) => {
   const startDateArr = startDate.split("-");
   const endDateArr = endDate.split("-");
@@ -39,5 +44,5 @@ export const getMiddleMonth = (startDate, endDate) => {
   const middleTimeStamp = (start.getTime() + end.getTime()) / 2;
   const middleDate = new Date(middleTimeStamp);
 
-  return middleDate.getMonth()+1;
+  return middleDate.getMonth() + 1;
 };

@@ -2,9 +2,9 @@ import classNames from "classnames/bind";
 import { useContext, useMemo } from "react";
 
 import styles from "./StudentList.module.scss";
-import { AppContext } from "../../context/AppProvider";
+import { AppContext } from "../../../context/AppProvider";
 import StudentRow from "./StudentRow/StudentRow";
-import DeleteStudentModal from "../../modals/DeleteStudentModal/DeleteStudentModal";
+import DeleteStudentModal from "../../../modals/DeleteStudentModal/DeleteStudentModal";
 
 const cx = classNames.bind(styles);
 function StudentList() {
@@ -25,14 +25,14 @@ function StudentList() {
           <div className={cx("header", "column", "delete")}>Xóa</div>
         </div>
         {studentList.length === 0 ? (
-          <div className={cx('notification')}>Không có dữ liệu</div>
+          <div className={cx("notification")}>Không có dữ liệu</div>
         ) : (
           studentList.map((student, index) => (
-            <StudentRow student={student} index={index} key={student.id}/>
+            <StudentRow student={student} index={index} key={student.id} />
           ))
         )}
       </div>
-      <DeleteStudentModal student={deleteStudent}/>
+      <DeleteStudentModal student={deleteStudent} />
     </div>
   );
 }

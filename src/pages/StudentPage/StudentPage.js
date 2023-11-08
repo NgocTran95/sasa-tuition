@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 
 import styles from "./StudentPage.module.scss";
-import EnterStudentForm from './EnterStudentForm';
-import SelectClassForm from '../../components/SelectClassForm';
-import StudentList from "../../components/StudentList/StudentList";
+import EnterStudentForm from "./EnterStudentForm";
+import SelectClassForm from "../../components/SelectClassForm";
+import StudentList from "./StudentList";
 const cx = classNames.bind(styles);
 
 function CustomTabPanel(props) {
@@ -56,8 +56,8 @@ function StudentPage() {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Nhập mới" {...a11yProps(0)} sx={{ fontSize: 14}}/>
-          <Tab label="Cập nhật" {...a11yProps(1)} sx={{ fontSize: 14}} />
+          <Tab label="Nhập mới" {...a11yProps(0)} sx={{ fontSize: 14 }} />
+          <Tab label="Cập nhật" {...a11yProps(1)} sx={{ fontSize: 14 }} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
