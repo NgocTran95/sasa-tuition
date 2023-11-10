@@ -2,43 +2,42 @@ import classNames from "classnames/bind";
 
 import styles from "./MainLayout.module.scss";
 import Header from "../../components/Header";
-import { Avatar } from "@mui/material";
+import { Button } from "@mui/material";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthProvider";
+import { Logout } from "@mui/icons-material";
+import { auth } from "../../firebase/config";
 
 const cx = classNames.bind(styles);
+
 function MainLayout({ children }) {
-  function stringToColor(string) {
-    let hash = 0;
-    let i;
-
-    for (i = 0; i < string.length; i += 1) {
-      hash = string.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    let color = "#";
-
-    for (i = 0; i < 3; i += 1) {
-      const value = (hash >> (i * 8)) & 0xff;
-      color += `00${value.toString(16)}`.slice(-2);
-    }
-    return color;
-  }
-
-  function stringAvatar(name) {
-    return {
-      sx: {
-        bgcolor: stringToColor(name),
-      },
-      children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
-    };
-  }
-
+  const { admin } = useContext(AuthContext);
+  const handleLogOut = () => {
+    auth.signOut();
+  };
   return (
     <div className={cx("main-layout")}>
       <Header />
       <div className={cx("content")}>
         <div className={cx("top-bar")}>
-          <span className={cx('hello')}>Xin chào Sa Sa</span>
-          <Avatar {...stringAvatar("Hồ Sa")} />
+          <Button
+            sx={{
+              width: "120px",
+              height: "60%",
+              color: "red",
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+              fontWeight: 600,
+              fontSize: "1.4rem",
+              verticalAlign: "center",
+            }}
+            onClick={handleLogOut}
+          >
+            <Logout />
+            <p>Log Out</p>
+          </Button>
+          <p>{admin.email}</p>
         </div>
         {children}
       </div>

@@ -25,6 +25,8 @@ const style = {
   bgcolor: "background.paper",
   borderRadius: "10px",
   boxShadow: 24,
+  maxHeight: '90vh',
+  overflow: 'auto',
   p: 4,
 };
 
