@@ -97,11 +97,11 @@ function ExportTuitionPage() {
         sx={{ fontSize: "1.4rem", width: "100%" }}
         onChange={(e) => setQueryYear(+e.target.value)}
       />
-      <TableContainer component={Paper} sx={{ mt: 2 }}>
+      <TableContainer component={Paper} className={cx('table')} sx={{ mt: 2 }}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontSize: "1.4rem", fontWeight: 500 }}>
+              <TableCell sx={{ fontSize: "1.4rem", fontWeight: 500, padding: '8px' }}>
                 Họ và Tên
               </TableCell>
               <TableCell

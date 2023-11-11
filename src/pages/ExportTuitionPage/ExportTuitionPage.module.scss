@@ -1,4 +1,6 @@
-
+.table {
+  width: 100% !important;
+}
 .download-btn {
     display: inline-block;
     padding: 10px 20px;
@@ -21,4 +23,17 @@
   .download-btn:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+  }
+
+
+  @media screen and (min-width: 768px) {
+    .table {
+      width: 80vw !important;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .table {
+      width: 100% !important;
+    }
   }
