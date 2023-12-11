@@ -10,7 +10,9 @@ import { AppContext } from "../../../../context/AppProvider";
 
 const cx = classNames.bind(styles);
 function InvoiceRow({ invoiceData }) {
-  const { setEditInvoiceModal, setDeleteInvoiceModal, setEditInvoice } = useContext(AppContext);
+  console.log(invoiceData);
+  const { setEditInvoiceModal, setDeleteInvoiceModal, setEditInvoice } =
+    useContext(AppContext);
   return (
     <>
       <div className={cx("row")}>
@@ -28,7 +30,7 @@ function InvoiceRow({ invoiceData }) {
         </div>
         <div className={cx("column", "amount")}>{invoiceData?.amount}</div>
         <div className={cx("column", "method")}>
-          {invoiceData?.method === "Chuyển khoản" ? "CK" : "Cash"}
+          {invoiceData?.method === "Tiền mặt" ? "Cash" : "CK"}
         </div>
         <div className={cx("column", "action")}>
           <IconButton
@@ -42,10 +44,13 @@ function InvoiceRow({ invoiceData }) {
           </IconButton>
         </div>
         <div className={cx("column", "action")}>
-          <IconButton sx={{ minHeight: "45px", aspectRatio: 1 }} onClick={() => {
-            setEditInvoice(invoiceData);
-            setDeleteInvoiceModal(true);
-          }}> 
+          <IconButton
+            sx={{ minHeight: "45px", aspectRatio: 1 }}
+            onClick={() => {
+              setEditInvoice(invoiceData);
+              setDeleteInvoiceModal(true);
+            }}
+          >
             <FontAwesomeIcon icon={faTrash} />
           </IconButton>
         </div>
