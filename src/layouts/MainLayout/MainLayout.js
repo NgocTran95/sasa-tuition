@@ -31,6 +31,7 @@ function MainLayout({ children }) {
               fontWeight: 600,
               fontSize: "1.4rem",
               verticalAlign: "center",
+              borderRadius: "999px",
             }}
             onClick={handleLogOut}
           >

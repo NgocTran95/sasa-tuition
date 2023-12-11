@@ -101,7 +101,7 @@ function ExportTuitionPage() {
         <Table aria-label="simple table" stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontSize: "1.4rem", fontWeight: 500 }}>
+              <TableCell sx={{ fontSize: "1.4rem", fontWeight: 500, padding: '8px' }}>
                 Họ và Tên
               </TableCell>
               <TableCell
