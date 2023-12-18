@@ -9,12 +9,11 @@ import { formatShortDate, getMiddleMonth } from "../../../../utilities";
 import { AppContext } from "../../../../context/AppProvider";
 
 const cx = classNames.bind(styles);
-function InvoiceRow({ invoiceData }) {
-  console.log(invoiceData);
+function InvoiceRow({ invoiceData, invoiceKey }) {
   const { setEditInvoiceModal, setDeleteInvoiceModal, setEditInvoice } =
     useContext(AppContext);
   return (
-    <>
+    <div key={invoiceKey}>
       <div className={cx("row")}>
         <div className={cx("column", "month")}>
           {getMiddleMonth(invoiceData?.startDate, invoiceData?.endDate)}
@@ -55,7 +54,7 @@ function InvoiceRow({ invoiceData }) {
           </IconButton>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

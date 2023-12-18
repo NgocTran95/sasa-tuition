@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppProvider";
 import {
   Modal,
@@ -7,8 +7,11 @@ import {
   Button,
   Autocomplete,
   TextField,
+  IconButton,
+  Input,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { doc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 
@@ -25,39 +28,71 @@ const style = {
   bgcolor: "background.paper",
   borderRadius: "10px",
   boxShadow: 24,
-  maxHeight: '90vh',
-  overflow: 'auto',
+  maxHeight: "90vh",
+  overflow: "auto",
   p: 4,
 };
 
 const paymentOptions = [{ label: "Chuyển khoản" }, { label: "Tiền mặt" }];
+
+const defaultEditStates = {
+  isPayDateEdit: false,
+  isStartDateEdit: false,
+  isEndDateEdit: false,
+  isAmountEdit: false,
+  isMethodEdit: false,
+};
 
 function EditInvoiceModal() {
   const {
     editInvoiceModal,
     setEditInvoiceModal,
     editInvoice,
+    setEditInvoice,
     updateInvoiceStudent,
     updateInvoiceYear,
   } = useContext(AppContext);
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm();
-  const updateInvoice = async (data) => {
+  // Edit states
+  const [editStates, setEditStates] = useState({
+    ...defaultEditStates,
+  });
+
+  const toggleEditStates = (state) => {
+    if (editStates[state]) {
+      setEditStates({ ...editStates, [state]: false });
+    } else {
+      setEditStates({ ...editStates, [state]: true });
+    }
+  };
+  // Execute edit invoice
+  const [editValues, setEditValues] = useState({});
+
+  useEffect(() => {
+    setEditValues({ ...editInvoice });
+  }, [editInvoice]);
+
+  const updateInvoiceField = (field, value) => {
+    setEditValues({ ...editValues, [field]: value });
+  };
+  console.log(editValues);
+
+  const updateInvoice = async () => {
     await updateDoc(doc(db, "invoices", editInvoice?.invoiceId), {
-      ...data,
+      ...editValues,
     }).finally(() => {
       setEditInvoiceModal(false);
+      setEditStates(defaultEditStates);
       toast.success("Đã cập nhật thành công");
     });
   };
   return (
     <Modal
       open={editInvoiceModal}
-      onClose={() => setEditInvoiceModal(false)}
+      onClose={() => {
+        setEditInvoiceModal(false);
+        setEditInvoice(null);
+        setEditStates(defaultEditStates);
+      }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -80,50 +115,46 @@ function EditInvoiceModal() {
             color: "red",
           }}
         >
-          Thông tin hóa đơn
+          Thông tin học sinh
         </Typography>
-        <Typography
-          sx={{ display: "inline-block", width: "50%", fontSize: "1.4rem" }}
-        >
-          Tên: {updateInvoiceStudent?.name}
-        </Typography>
-        <Typography
-          sx={{ display: "inline-block", width: "50%", fontSize: "1.4rem" }}
-        >
-          Năm học: {updateInvoiceYear}
-        </Typography>
-        <Typography
-          sx={{ display: "inline-block", width: "50%", fontSize: "1.4rem" }}
-        >
-          Tháng:{" "}
-          {editInvoice &&
-            getMiddleMonth(editInvoice.startDate, editInvoice.endDate)}
-        </Typography>
-        <Typography
-          sx={{ display: "inline-block", width: "50%", fontSize: "1.4rem" }}
-        >
-          Ngày nộp: {editInvoice && formatPaymentDate(editInvoice.paymentDate)}
-        </Typography>
-        <Typography
-          sx={{ display: "inline-block", width: "50%", fontSize: "1.4rem" }}
-        >
-          Bắt đầu: {editInvoice && formatPaymentDate(editInvoice.startDate)}
-        </Typography>
-        <Typography
-          sx={{ display: "inline-block", width: "50%", fontSize: "1.4rem" }}
-        >
-          Kết thúc: {editInvoice && formatPaymentDate(editInvoice.endDate)}
-        </Typography>
-        <Typography
-          sx={{ display: "inline-block", width: "50%", fontSize: "1.4rem" }}
-        >
-          Số tiền: {editInvoice?.amount} VNĐ
-        </Typography>
-        <Typography
-          sx={{ display: "inline-block", width: "50%", fontSize: "1.4rem" }}
-        >
-          PTTT: {editInvoice?.method}
-        </Typography>
+        <Box>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "35%" }}
+          >
+            Tên:
+          </Typography>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "50%" }}
+          >
+            {updateInvoiceStudent.name}
+          </Typography>
+        </Box>
+        <Box>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "35%" }}
+          >
+            Lớp:
+          </Typography>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "50%" }}
+          >
+            {updateInvoiceStudent.class}
+          </Typography>
+        </Box>
+        <Box>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "35%" }}
+          >
+            Tháng:
+          </Typography>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "50%" }}
+          >
+            {editInvoice &&
+              getMiddleMonth(editInvoice.startDate, editInvoice.endDate)}
+            /{updateInvoiceYear}
+          </Typography>
+        </Box>
         <Typography
           id="modal-modal-description"
           sx={{
@@ -134,120 +165,161 @@ function EditInvoiceModal() {
             color: "red",
           }}
         >
-          Thông tin chỉnh sửa
+          Thông tin chỉnh sửa
         </Typography>
-        <form onSubmit={handleSubmit(updateInvoice)}>
-          <Box sx={{ mt: 1, mb: 1, fontSize: 14 }}>
-            <label htmlFor="paymentDate">Ngày nộp: </label>
-            <TextField
+        <Box>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "35%" }}
+          >
+            Ngày nộp:
+          </Typography>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "50%" }}
+          >
+            {editInvoice && formatPaymentDate(editInvoice?.paymentDate)}
+          </Typography>
+          <IconButton
+            sx={{ display: "inline-block" }}
+            onClick={() => toggleEditStates("isPayDateEdit")}
+          >
+            <FontAwesomeIcon icon={faPencil} />
+          </IconButton>
+        </Box>
+        {editStates.isPayDateEdit && (
+          <Box sx={{ display: "flex", gap: "20px", mt: 2, mb: 2 }}>
+            <Input
               type="date"
-              id="paymentDate"
-              name="paymentDate"
-              inputProps={{ style: { fontSize: 14 } }}
-              fullWidth
-              {...register("paymentDate", {
-                required: "Bạn chưa nhập ngày nộp học phí",
-              })}
-            />
-            {errors.paymentDate && errors.paymentDate.type === "required" && (
-              <Typography sx={{ color: "red" }}>
-                {errors.paymentDate.message}
-              </Typography>
-            )}
-          </Box>
-          <Box sx={{ mt: 1, mb: 1, fontSize: 14 }}>
-            <label htmlFor="startDate">Ngày bắt đầu: </label>
-            <TextField
-              type="date"
-              id="startDate"
-              name="startDate"
-              inputProps={{ style: { fontSize: 14 } }}
-              fullWidth
-              {...register("startDate", {
-                required: "Bạn chưa nhập ngày bắt đầu học",
-              })}
-            />
-            {errors.startDate && errors.startDate.type === "required" && (
-              <Typography sx={{ color: "red" }}>
-                {errors.startDate.message}
-              </Typography>
-            )}
-          </Box>
-          <Box sx={{ mt: 1, mb: 1, fontSize: 14 }}>
-            <label htmlFor="endDate">Ngày kết thúc: </label>
-            <TextField
-              type="date"
-              id="endDate"
-              name="endDate"
-              inputProps={{ style: { fontSize: 14 } }}
-              fullWidth
-              {...register("endDate", {
-                required: "Bạn chưa nhập ngày kết thúc học",
-              })}
-            />
-            {errors.endDate && errors.endDate.type === "required" && (
-              <Typography sx={{ color: "red" }}>
-                {errors.endDate.message}
-              </Typography>
-            )}
-          </Box>
-          <Box sx={{ mt: 1, mb: 1, fontSize: 14 }}>
-            <label htmlFor="amount">Số tiền: </label>
-            <TextField
-              type="number"
-              id="amount"
-              name="amount"
-              inputProps={{ style: { fontSize: 14 } }}
-              fullWidth
-              {...register("amount", {
-                required: "Bạn chưa nhập số tiền học phí",
-              })}
-            />
-            {errors.amount && errors.amount.type === "required" && (
-              <Typography sx={{ color: "red" }}>
-                {errors.amount.message}
-              </Typography>
-            )}
-          </Box>
-          <Box sx={{ mt: 1, mb: 1, fontSize: 14 }}>
-            <label htmlFor="method">Phương thức thanh toán: </label>
-            <Autocomplete
-              name="method"
-              id="method"
-              options={paymentOptions}
-              onSelect={() => setError("method", null)}
-              isOptionEqualToValue={(option, value) =>
-                option.label === value.label
+              sx={{ fontSize: "1.4rem", width: "100%" }}
+              defaultValue={editInvoice?.paymentDate}
+              onChange={(e) =>
+                updateInvoiceField("paymentDate", e.target.value)
               }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  inputProps={{ ...params.inputProps, style: { fontSize: 14 } }}
-                  {...register("method", {
-                    required: "Bạn chưa nhập phương thức thanh toán",
-                  })}
-                />
-              )}
             />
-            {errors.method && errors.method.type === "required" && (
-              <Typography sx={{ color: "red" }}>
-                {errors.method.message}
-              </Typography>
-            )}
           </Box>
-        </form>
+        )}
+        <Box>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "35%" }}
+          >
+            Ngày bắt đầu:
+          </Typography>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "50%" }}
+          >
+            {editInvoice && formatPaymentDate(editInvoice?.startDate)}
+          </Typography>
+          <IconButton
+            sx={{ display: "inline-block" }}
+            onClick={() => toggleEditStates("isStartDateEdit")}
+          >
+            <FontAwesomeIcon icon={faPencil} />
+          </IconButton>
+        </Box>
+        {editStates.isStartDateEdit && (
+          <Box sx={{ display: "flex", gap: "20px", mt: 2, mb: 2 }}>
+            <Input
+              type="date"
+              sx={{ fontSize: "1.4rem", width: "100%" }}
+              defaultValue={editInvoice?.startDate}
+              onChange={(e) => updateInvoiceField("startDate", e.target.value)}
+            />
+          </Box>
+        )}
+        <Box>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "35%" }}
+          >
+            Ngày kết thúc:
+          </Typography>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "50%" }}
+          >
+            {editInvoice && formatPaymentDate(editInvoice?.endDate)}
+          </Typography>
+          <IconButton
+            sx={{ display: "inline-block" }}
+            onClick={() => toggleEditStates("isEndDateEdit")}
+          >
+            <FontAwesomeIcon icon={faPencil} />
+          </IconButton>
+        </Box>
+        {editStates.isEndDateEdit && (
+          <Box sx={{ display: "flex", gap: "20px", mt: 2, mb: 2 }}>
+            <Input
+              type="date"
+              sx={{ fontSize: "1.4rem", width: "100%" }}
+              defaultValue={editInvoice?.endDate}
+              onChange={(e) => updateInvoiceField("endDate", e.target.value)}
+            />
+          </Box>
+        )}
+        <Box>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "35%" }}
+          >
+            Số tiền:
+          </Typography>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "50%" }}
+          >
+            {editInvoice && formatPaymentDate(editInvoice?.amount)}
+          </Typography>
+          <IconButton
+            sx={{ display: "inline-block" }}
+            onClick={() => toggleEditStates("isAmountEdit")}
+          >
+            <FontAwesomeIcon icon={faPencil} />
+          </IconButton>
+        </Box>
+        {editStates.isAmountEdit && (
+          <Box sx={{ display: "flex", gap: "20px", mt: 2, mb: 2 }}>
+            <Input
+              type="number"
+              sx={{ fontSize: "1.4rem", width: "100%" }}
+              defaultValue={editInvoice?.amount}
+              onChange={(e) => updateInvoiceField("amount", e.target.value)}
+            />
+          </Box>
+        )}
+        <Box>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "35%" }}
+          >
+            Thanh toán:
+          </Typography>
+          <Typography
+            sx={{ display: "inline-block", fontSize: "1.4rem", width: "50%" }}
+          >
+            {editInvoice && formatPaymentDate(editInvoice?.method)}
+          </Typography>
+          <IconButton
+            sx={{ display: "inline-block" }}
+            onClick={() => toggleEditStates("isMethodEdit")}
+          >
+            <FontAwesomeIcon icon={faPencil} />
+          </IconButton>
+        </Box>
+        {editStates.isMethodEdit && (
+          <Box sx={{ display: "flex", gap: "20px", mt: 2, mb: 2 }}>
+            <Autocomplete
+              options={paymentOptions}
+              defaultValue={editInvoice?.method}
+              isOptionEqualToValue={(option, value) =>
+                option.value === value.value
+              }
+              onChange={(e, value) => updateInvoiceField("method", value.label)}
+              sx={{ fontSize: "1.4rem", width: "100%" }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </Box>
+        )}
         <Button
-          sx={{
-            mt: 1,
-            width: "100%",
-            minHeight: "40px",
-            fontSize: "1.4rem",
-          }}
           variant="contained"
-          color="primary"
-          onClick={handleSubmit(updateInvoice)}
+          color="success"
+          onClick={updateInvoice}
+          sx={{ width: "100%", minHeight: "5rem", mt: 2, fontSize: "1.4rem" }}
         >
-          Xác nhận
+          OK
         </Button>
       </Box>
     </Modal>

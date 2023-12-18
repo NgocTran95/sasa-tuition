@@ -38,7 +38,7 @@ function InvoiceTable() {
         <div className={cx("column", "action")}>Xóa</div>
       </div>
       {studentInvoices.map((invoice) => (
-        <InvoiceRow invoiceData={invoice} key={invoice?.id} />
+        <InvoiceRow invoiceData={invoice} invoiceKey={invoice?.id} />
       ))}
       <EditInvoiceModal />
       <DeleteInvoiceModal />
