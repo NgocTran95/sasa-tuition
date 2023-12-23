@@ -21,7 +21,7 @@ function EnterStudentForm() {
     formState: { errors },
   } = useForm();
   const onSubmit = async ({ enterStudentName, enterClass }) => {
-    const studentClass = +enterClass.slice(-1);
+    const studentClass = enterClass === 'Đã tốt nghiệp' ? enterClass : +enterClass.slice(-1);
     const studentRef = doc(collection(db, "students"));
     const isExist = students.some(
       (student) =>

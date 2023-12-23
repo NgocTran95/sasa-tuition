@@ -7,6 +7,7 @@ import styles from "./StudentPage.module.scss";
 import EnterStudentForm from "./EnterStudentForm";
 import SelectClassForm from "../../components/SelectClassForm";
 import StudentList from "./StudentList";
+import UpdateClass from "./UpdateClass";
 const cx = classNames.bind(styles);
 
 function CustomTabPanel(props) {
@@ -57,7 +58,8 @@ function StudentPage() {
           aria-label="basic tabs example"
         >
           <Tab label="Nhập mới" {...a11yProps(0)} sx={{ fontSize: 14 }} />
-          <Tab label="Cập nhật" {...a11yProps(1)} sx={{ fontSize: 14 }} />
+          <Tab label="Điều chỉnh" {...a11yProps(1)} sx={{ fontSize: 14 }} />
+          <Tab label="Cập nhật lớp" {...a11yProps(2)} sx={{ fontSize: 14 }} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -66,6 +68,9 @@ function StudentPage() {
       <CustomTabPanel value={value} index={1}>
         <SelectClassForm />
         <StudentList />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <UpdateClass />
       </CustomTabPanel>
     </div>
   );

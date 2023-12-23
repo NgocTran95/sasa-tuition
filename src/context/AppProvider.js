@@ -40,6 +40,9 @@ const defaultContextValue = {
   // set edit invoice
   editInvoice: null,
   setEditInvoice: () => {},
+  // class mass update modal toggle
+  massUpdateModal: false,
+  setMassUpdateModal: () => {},
 };
 
 export const AppContext = createContext(defaultContextValue);
@@ -58,6 +61,8 @@ function AppProvider({ children }) {
 
   const [deleteStudentModal, setDeleteStudentModal] = useState(false);
   const [deleteStudent, setDeleteStudent] = useState(null);
+  
+  const [massUpdateModal, setMassUpdateModal] = useState(false);
 
   const [editInvoiceModal, setEditInvoiceModal] = useState(false);
   const [deleteInvoiceModal, setDeleteInvoiceModal] = useState(false);
@@ -120,6 +125,8 @@ function AppProvider({ children }) {
         setSelectedClass,
         deleteStudentModal,
         setDeleteStudentModal,
+        massUpdateModal,
+        setMassUpdateModal,
         editInvoiceModal,
         setEditInvoiceModal,
         deleteInvoiceModal,

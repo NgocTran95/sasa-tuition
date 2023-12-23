@@ -6,9 +6,8 @@ import styles from "./SelectStudentForm.module.scss";
 import { AppContext } from "../../context/AppProvider";
 
 const cx = classNames.bind(styles);
-function SelectStudentForm( { setStudent, setYear }) {
-  const { students } =
-    useContext(AppContext);
+function SelectStudentForm({ setStudent, setYear }) {
+  const { students } = useContext(AppContext);
   return (
     <div className={cx("container")}>
       <h2 className={cx("title")}>Chọn học sinh</h2>
@@ -18,7 +17,11 @@ function SelectStudentForm( { setStudent, setYear }) {
         </label>
         <Autocomplete
           options={students}
-          getOptionLabel={(option) => option.name + " - Lớp " + option.class}
+          getOptionLabel={(option) =>
+            option.class === "Đã tốt nghiệp"
+              ? option.name + " - " + option.class
+              : option.name + " - Lớp " + option.class
+          }
           isOptionEqualToValue={(option, value) => option.label === value.label}
           onChange={(e, value) => setStudent(value)}
           renderInput={(params) => (

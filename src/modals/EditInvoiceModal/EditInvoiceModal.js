@@ -74,7 +74,6 @@ function EditInvoiceModal() {
   const updateInvoiceField = (field, value) => {
     setEditValues({ ...editValues, [field]: value });
   };
-  console.log(editValues);
 
   const updateInvoice = async () => {
     await updateDoc(doc(db, "invoices", editInvoice?.invoiceId), {

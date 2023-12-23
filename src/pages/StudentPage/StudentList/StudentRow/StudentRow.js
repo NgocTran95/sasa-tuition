@@ -39,7 +39,7 @@ function StudentRow({ student, index }) {
     if (isExist) {
       toast.error("Dữ liệu đã tồn tại.");
     } else {
-      updateDoc(doc(db, "students", student.id), {
+      await updateDoc(doc(db, "students", student.id), {
         name: data.name,
         class: +data.class.slice(-1),
       }).finally(() => {
