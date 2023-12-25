@@ -61,7 +61,7 @@ function AppProvider({ children }) {
 
   const [deleteStudentModal, setDeleteStudentModal] = useState(false);
   const [deleteStudent, setDeleteStudent] = useState(null);
-  
+
   const [massUpdateModal, setMassUpdateModal] = useState(false);
 
   const [editInvoiceModal, setEditInvoiceModal] = useState(false);
@@ -79,6 +79,7 @@ function AppProvider({ children }) {
         class: doc.data().class,
         createAt: doc.data().createAt,
         id: doc.id,
+        graduatedYear: doc.data().graduatedYear,
       }));
       setStudents(documents);
     });

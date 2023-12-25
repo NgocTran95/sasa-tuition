@@ -32,7 +32,8 @@ function StudentRow({ student, index }) {
 
   const updateStudent = async (data) => {
     const { class: classStr, name } = data;
-    const studentClass = +classStr;
+    const studentClass = classStr === 'Đã TN' ? "Đã tốt nghiệp" : +classStr;
+    const graduatedYear = classStr === 'Đã TN' ? new Date().getFullYear() : null;
     const isExist = students.some(
       (student) => student.name === name && student.class === studentClass
     );
@@ -41,7 +42,8 @@ function StudentRow({ student, index }) {
     } else {
       await updateDoc(doc(db, "students", student.id), {
         name: data.name,
-        class: +data.class.slice(-1),
+        class: studentClass,
+        graduatedYear,
       }).finally(() => {
         setEdit(false);
         toast.success("Đã cập nhật thành công");
@@ -86,6 +88,7 @@ function StudentRow({ student, index }) {
               type="text"
               required
               fullWidth
+              defaultValue={student?.name}
               {...register("name", { required: "Thiếu tên" })}
             />
             {errors.name && errors.name.type === "required" && (
@@ -96,8 +99,9 @@ function StudentRow({ student, index }) {
             <Autocomplete
               options={minimumClassOptions}
               isOptionEqualToValue={(option, value) =>
-                option.label === value.label
+                option.value === value.value
               }
+              defaultValue={student.class === "Đã tốt nghiệp" ? 'Đã TN' : student.class}
               sx={{ height: "100%" }}
               onSelect={() => setError("class", null)}
               renderInput={(params) => (

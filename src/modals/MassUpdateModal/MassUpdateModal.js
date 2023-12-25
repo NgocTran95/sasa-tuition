@@ -6,17 +6,17 @@ import { db } from "../../firebase/config";
 import { toast } from "react-toastify";
 
 const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: '40%',
-    minWidth: 350,
-    bgcolor: "background.paper",
-    borderRadius: '10px',
-    boxShadow: 24,
-    p: 4,
-  };
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "40%",
+  minWidth: 350,
+  bgcolor: "background.paper",
+  borderRadius: "10px",
+  boxShadow: 24,
+  p: 4,
+};
 
 function MassUpdateModal({ updateStudents }) {
   const { massUpdateModal, setMassUpdateModal } = useContext(AppContext);
@@ -24,9 +24,16 @@ function MassUpdateModal({ updateStudents }) {
     updateStudents.forEach(async (student) => {
       const updateClass =
         student.class === 9 ? "Đã tốt nghiệp" : student.class + 1;
+      if (updateClass === "Đã tốt nghiệp") {
+        await updateDoc(doc(db, "students", student.id), {
+          class: updateClass,
+          graduatedYear: new Date().getFullYear(),
+        });
+      } else {
         await updateDoc(doc(db, "students", student.id), {
           class: updateClass,
         });
+      }
     });
     toast.success("Cập nhật lớp hàng loạt thành công");
   };
@@ -55,7 +62,7 @@ function MassUpdateModal({ updateStudents }) {
         <Button
           onClick={() => {
             classMassUpdate();
-            setMassUpdateModal(false)
+            setMassUpdateModal(false);
           }}
           sx={{
             position: "absolute",

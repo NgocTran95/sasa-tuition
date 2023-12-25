@@ -125,7 +125,7 @@ function EditInvoiceModal() {
           <Typography
             sx={{ display: "inline-block", fontSize: "1.4rem", width: "50%" }}
           >
-            {updateInvoiceStudent.name}
+            {updateInvoiceStudent?.name}
           </Typography>
         </Box>
         <Box>
@@ -137,7 +137,7 @@ function EditInvoiceModal() {
           <Typography
             sx={{ display: "inline-block", fontSize: "1.4rem", width: "50%" }}
           >
-            {updateInvoiceStudent.class}
+            {updateInvoiceStudent?.class}
           </Typography>
         </Box>
         <Box>

@@ -19,10 +19,14 @@ function SelectStudentForm({ setStudent, setYear }) {
           options={students}
           getOptionLabel={(option) =>
             option.class === "Đã tốt nghiệp"
-              ? option.name + " - " + option.class
-              : option.name + " - Lớp " + option.class
+              ? option?.name +
+                " - " +
+                option?.class +
+                " - " +
+                option?.graduatedYear
+              : option?.name + " - Lớp " + option?.class
           }
-          isOptionEqualToValue={(option, value) => option.label === value.label}
+          isOptionEqualToValue={(option, value) => option.value === value.value}
           onChange={(e, value) => setStudent(value)}
           renderInput={(params) => (
             <TextField
