@@ -34,7 +34,7 @@ export const formatLearnProcess = (startDate, endDate) => {
   );
 };
 
-export const getMiddleMonth = (startDate, endDate) => {
+const getMiddleTimeStamp = (startDate, endDate) => {
   const startParts = startDate.split("-");
   const endParts = endDate.split("-");
 
@@ -42,7 +42,15 @@ export const getMiddleMonth = (startDate, endDate) => {
   const end = new Date(endParts[0], endParts[1] - 1, endParts[2]);
 
   const middleTimeStamp = (start.getTime() + end.getTime()) / 2;
-  const middleDate = new Date(middleTimeStamp);
+  return new Date(middleTimeStamp);
+}
 
-  return middleDate.getMonth() + 1;
+export const getMiddleMonth = (startDate, endDate) => {
+  const timeStamp = getMiddleTimeStamp(startDate, endDate);
+  return timeStamp.getMonth() + 1;
 };
+
+export const getYear = (startDate, endDate) => {
+  const timeStamp = getMiddleTimeStamp(startDate, endDate);
+  return timeStamp.getFullYear();
+}

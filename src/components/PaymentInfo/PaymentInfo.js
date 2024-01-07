@@ -6,9 +6,10 @@ import { useContext } from "react";
 
 import styles from "./PaymentInfo.module.scss";
 import UpdateButton from "../UpdateButton";
-import { AppContext } from '../../context/AppProvider';
+import { AppContext } from "../../context/AppProvider";
 import { db } from "../../firebase/config";
 import { toast } from "react-toastify";
+import { getYear } from "../../utilities";
 
 const paymentOptions = [{ label: "Chuyển khoản" }, { label: "Tiền mặt" }];
 const cx = classNames.bind(styles);
@@ -22,16 +23,16 @@ function PaymentInfo() {
 
   const { addInvoiceStudent } = useContext(AppContext);
 
-  const onSubmit = async(data) => {
-    const { paymentDate } = data;
-    const year = +paymentDate.slice(0, 4);
+  const onSubmit = async (data) => {
+    const { startDate, endDate } = data;
+    const year = getYear(startDate, endDate);
     const invoicesRef = doc(collection(db, "invoices"));
     await setDoc(invoicesRef, {
       studentId: addInvoiceStudent.id,
       year,
       ...data,
       createAt: serverTimestamp(),
-    }).then(() => toast.success('Cập nhật thông tin hóa đơn thành công.'))
+    }).then(() => toast.success("Cập nhật thông tin hóa đơn thành công."));
   };
   return (
     <form className={cx("form")} onSubmit={handleSubmit(onSubmit)}>
@@ -124,7 +125,7 @@ function PaymentInfo() {
           name="method"
           id="method"
           options={paymentOptions}
-          onSelect={() => setError('method', null)}
+          onSelect={() => setError("method", null)}
           isOptionEqualToValue={(option, value) => option.label === value.label}
           renderInput={(params) => (
             <TextField
@@ -140,7 +141,10 @@ function PaymentInfo() {
           <span className={cx("error-msg")}>{errors.method.message}</span>
         )}
       </div>
-      <UpdateButton sx={{ mt: 1, width: '100%', minHeight: '45px', fontSize: '1.4rem'}} onClick={handleSubmit(onSubmit)} />
+      <UpdateButton
+        sx={{ mt: 1, width: "100%", minHeight: "45px", fontSize: "1.4rem" }}
+        onClick={handleSubmit(onSubmit)}
+      />
     </form>
   );
 }
